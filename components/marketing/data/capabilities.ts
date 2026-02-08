@@ -25,7 +25,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: 'Live orchestration',
       previewMetric: '12 pipelines online',
       previewTone: 'cyan',
-      previewImage: '/images/agent.png',
+      previewImage: '/images/agent.webp',
       previewImageAlt: 'Agent workspace interface',
     },
     {
@@ -43,7 +43,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: 'Node execution graph',
       previewMetric: '98.7% success rate',
       previewTone: 'violet',
-      previewImage: '/images/workflow.png',
+      previewImage: '/images/workflow.webp',
       previewImageAlt: 'Workflow canvas',
     },
     {
@@ -61,7 +61,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: 'Hybrid retrieval',
       previewMetric: '4.2M vectors indexed',
       previewTone: 'emerald',
-      previewImage: '/images/knowledge.png',
+      previewImage: '/images/knowledge.webp',
       previewImageAlt: 'Knowledge base index',
     },
     {
@@ -79,7 +79,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: 'Policy control center',
       previewMetric: '0 critical violations',
       previewTone: 'cyan',
-      previewImage: '/images/permissions.png',
+      previewImage: '/images/permissions.webp',
       previewImageAlt: 'Security permissions console',
     },
     {
@@ -97,7 +97,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: 'MCP + API connectors',
       previewMetric: '63 tools connected',
       previewTone: 'violet',
-      previewImage: ['/images/tool-list.png', '/images/mcp.png'],
+      previewImage: ['/images/tool-list.webp', '/images/mcp.webp'],
       previewImageAlt: ['Tool registry list', 'MCP integrations'],
     },
     {
@@ -115,7 +115,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: 'Runtime observability',
       previewMetric: '43 ms p95 latency',
       previewTone: 'emerald',
-      previewImage: '/images/audit-logs.png',
+      previewImage: '/images/audit-logs.webp',
       previewImageAlt: 'Operations audit logs',
     },
   ],
@@ -135,7 +135,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: '在线编排与调度',
       previewMetric: '12 条流程在线',
       previewTone: 'cyan',
-      previewImage: '/images/agent.png',
+      previewImage: '/images/agent.webp',
       previewImageAlt: 'Agent 工作台界面',
     },
     {
@@ -153,7 +153,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: '节点执行视图',
       previewMetric: '98.7% 成功率',
       previewTone: 'violet',
-      previewImage: '/images/workflow.png',
+      previewImage: '/images/workflow.webp',
       previewImageAlt: '工作流画布',
     },
     {
@@ -171,7 +171,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: '混合检索引擎',
       previewMetric: '420 万向量索引',
       previewTone: 'emerald',
-      previewImage: '/images/knowledge.png',
+      previewImage: '/images/knowledge.webp',
       previewImageAlt: '知识库索引',
     },
     {
@@ -189,7 +189,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: '策略集中管控',
       previewMetric: '0 高危告警',
       previewTone: 'cyan',
-      previewImage: '/images/permissions.png',
+      previewImage: '/images/permissions.webp',
       previewImageAlt: '权限管理控制台',
     },
     {
@@ -207,7 +207,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: 'MCP + API 连接',
       previewMetric: '63 个工具接入',
       previewTone: 'violet',
-      previewImage: ['/images/tool-list.png', '/images/mcp.png'],
+      previewImage: ['/images/tool-list.webp', '/images/mcp.webp'],
       previewImageAlt: ['工具列表', 'MCP 集成'],
     },
     {
@@ -225,7 +225,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       previewMeta: '运行时观测分析',
       previewMetric: '43ms P95 延迟',
       previewTone: 'emerald',
-      previewImage: '/images/audit-logs.png',
+      previewImage: '/images/audit-logs.webp',
       previewImageAlt: '审计日志',
     },
   ],

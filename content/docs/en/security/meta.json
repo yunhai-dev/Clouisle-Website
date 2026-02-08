@@ -1,0 +1,7 @@
+{
+  "title": "Security",
+  "description": "Security and access control",
+  "root": true,
+  "icon": "Shield",
+  "pages": ["overview", "authentication", "rbac", "audit-logs", "data-isolation", "encryption"]
+}

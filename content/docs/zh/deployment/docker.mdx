@@ -1,0 +1,39 @@
+---
+title: Docker
+description: 使用 Docker Compose 部署 Clouisle
+---
+
+## Docker 部署
+
+> 内容即将补充。
+
+### 前置条件
+
+{/* TODO: 文档化 Docker 版本要求 */}
+
+### Docker Compose
+
+```yaml
+# docker-compose.yml（示例结构）
+services:
+  frontend:
+    # Next.js 应用网关
+  backend:
+    # FastAPI 控制平面
+  postgres:
+    # 事务元数据存储
+  qdrant:
+    # 向量数据库
+  worker:
+    # 异步任务 Worker
+  scheduler:
+    # 定时调度服务
+```
+
+### 配置
+
+{/* TODO: 文档化 Docker 部署的环境变量 */}
+
+### 升级
+
+{/* TODO: 文档化升级流程 */}

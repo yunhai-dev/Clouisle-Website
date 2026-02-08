@@ -1,0 +1,6 @@
+{
+  "title": "介绍",
+  "description": "开始使用 Clouisle",
+  "root": true,
+  "pages": ["index"]
+}

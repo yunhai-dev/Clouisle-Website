@@ -1,0 +1,7 @@
+{
+  "title": "Guide",
+  "description": "Learn how to use Clouisle",
+  "root": true,
+  "icon": "Book",
+  "pages": ["introduction", "installation", "configuration", "agents", "workflows", "knowledge-base", "rag", "tools-mcp", "observability"]
+}

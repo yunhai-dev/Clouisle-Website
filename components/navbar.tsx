@@ -43,7 +43,7 @@ export function Navbar() {
       { href: `/${lang}#architecture`, text: t.architecture, docs: false },
       { href: `/${lang}#security`, text: t.security, docs: false },
       { href: `/${lang}#use-cases`, text: t.useCases, docs: false },
-      { href: `/${lang}/docs`, text: t.docs, docs: true },
+      { href: 'https://deepwiki.com/yunhai-dev/Clouisle', text: t.docs, docs: true },
     ],
     [lang, t.architecture, t.docs, t.product, t.security, t.useCases]
   );
@@ -113,20 +113,32 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {navLinks.map(link => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                'rounded-lg px-3 py-2 text-sm transition-colors',
-                link.docs && docsActive
-                  ? 'bg-white/12 text-white'
-                  : 'text-zinc-400 hover:bg-white/8 hover:text-zinc-100'
-              )}
-            >
-              {link.text}
-            </Link>
-          ))}
+          {navLinks.map(link =>
+            link.href.startsWith('http') ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg px-3 py-2 text-sm text-zinc-400 transition-colors hover:bg-white/8 hover:text-zinc-100"
+              >
+                {link.text}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  'rounded-lg px-3 py-2 text-sm transition-colors',
+                  link.docs && docsActive
+                    ? 'bg-white/12 text-white'
+                    : 'text-zinc-400 hover:bg-white/8 hover:text-zinc-100'
+                )}
+              >
+                {link.text}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
@@ -168,16 +180,29 @@ export function Navbar() {
             className="absolute left-4 right-4 top-[4.4rem] rounded-2xl border border-white/10 bg-black/80 p-3 backdrop-blur-md md:hidden"
           >
             <div className="flex flex-col gap-1">
-              {navLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/8 hover:text-zinc-100"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.text}
-                </Link>
-              ))}
+              {navLinks.map(link =>
+                link.href.startsWith('http') ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/8 hover:text-zinc-100"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.text}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/8 hover:text-zinc-100"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.text}
+                  </Link>
+                )
+              )}
               <Link
                 href={altPath}
                 className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/8 hover:text-zinc-100"

@@ -173,23 +173,23 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="https://app.clouisle.asia"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/${locale}/beta`}
               className="cl-btn-primary cl-magnetic"
               ref={magneticPrimaryRef as React.Ref<HTMLAnchorElement>}
             >
               {t.primaryCta}
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link
-              href={`/${locale}/docs`}
+            <a
+              href="https://deepwiki.com/yunhai-dev/Clouisle"
+              target="_blank"
+              rel="noopener noreferrer"
               className="cl-btn-secondary cl-magnetic"
               ref={magneticSecondaryRef as React.Ref<HTMLAnchorElement>}
             >
               <Play className="h-4 w-4" />
               {t.secondaryCta}
-            </Link>
+            </a>
           </div>
 
           {/* Product hero screenshot */}

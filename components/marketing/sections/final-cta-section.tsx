@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import type { Locale, CopyData } from '../data/types';
 import { useMagnetic } from '../hooks/use-magnetic';
 
@@ -25,16 +26,14 @@ export function FinalCtaSection({ locale, t, reducedMotion }: FinalCtaSectionPro
         </h2>
         <p className="mt-5 max-w-2xl text-base text-zinc-300">{t.finalBody}</p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <a
-            href="https://app.clouisle.asia"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/${locale}/beta`}
             className="cl-btn-primary cl-btn-lg cl-magnetic"
             ref={magneticPrimaryRef as React.Ref<HTMLAnchorElement>}
           >
             {t.finalPrimary}
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
           <a
             href="mailto:yunhai@yhnotes.com"
             className="cl-btn-secondary cl-btn-lg cl-magnetic"

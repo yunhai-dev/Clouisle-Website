@@ -159,9 +159,9 @@ export function Navbar() {
           >
             <Github className="h-4 w-4" />
           </a>
-          <a href="https://app.clouisle.asia" target="_blank" rel="noopener noreferrer" className="cl-btn-primary h-10 px-4 text-sm">
+          <Link href={`/${lang}/beta`} className="cl-btn-primary h-10 px-4 text-sm">
             {t.cta}
-          </a>
+          </Link>
         </div>
 
         <button
@@ -211,15 +211,13 @@ export function Navbar() {
                 <Globe className="h-3.5 w-3.5" />
                 {altLang === 'zh' ? '切换到中文' : 'Switch to English'}
               </Link>
-              <a
-                href="https://app.clouisle.asia"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href={`/${lang}/beta`}
                 className="mt-2 rounded-lg bg-white px-3 py-2 text-sm font-medium text-zinc-900"
                 onClick={() => setIsOpen(false)}
               >
                 {t.cta}
-              </a>
+              </Link>
             </div>
           </div>
         )}

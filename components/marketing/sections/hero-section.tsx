@@ -182,16 +182,14 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
               {t.primaryCta}
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href="https://deepwiki.com/yunhai-dev/Clouisle"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href={`/${locale}/beta`}
               className="cl-btn-secondary cl-magnetic"
               ref={magneticSecondaryRef as React.Ref<HTMLAnchorElement>}
             >
               <Play className="h-4 w-4" />
               {t.secondaryCta}
-            </a>
+            </Link>
           </div>
 
           {/* Product hero screenshot */}

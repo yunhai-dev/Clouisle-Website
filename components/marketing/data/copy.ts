@@ -8,7 +8,7 @@ export const copy: Record<Locale, CopyData> = {
     subtitle:
       'Clouisle combines AI agents, workflow orchestration, and enterprise-grade knowledge retrieval into one production platform.',
     primaryCta: 'Try Beta',
-    secondaryCta: 'Explore Docs',
+    secondaryCta: 'Apply for Beta',
     heroImage: '/images/admin-panel.webp',
     heroImageAlt: 'Clouisle Admin Panel',
     stats: [
@@ -223,7 +223,7 @@ export const copy: Record<Locale, CopyData> = {
     subtitle:
       '云屿将 AI Agent、工作流编排与企业级知识检索整合到同一平台，帮助团队安全落地生产级 AI。',
     primaryCta: '开始体验',
-    secondaryCta: '查看文档',
+    secondaryCta: '申请内测',
     heroImage: '/images/admin-panel.webp',
     heroImageAlt: '云屿管理面板',
     stats: [

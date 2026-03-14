@@ -1,7 +1,0 @@
-{
-  "title": "安全",
-  "description": "安全与访问控制",
-  "root": true,
-  "icon": "Shield",
-  "pages": ["overview", "authentication", "rbac", "audit-logs", "data-isolation", "encryption"]
-}

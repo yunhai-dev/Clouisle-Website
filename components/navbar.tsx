@@ -13,7 +13,7 @@ const labels = {
     architecture: 'Architecture',
     security: 'Security & Deployment',
     useCases: 'Use Cases',
-    docs: 'Apply for Beta',
+    docs: 'Docs',
     cta: 'Try Beta',
   },
   zh: {
@@ -21,7 +21,7 @@ const labels = {
     architecture: '架构',
     security: '安全与部署',
     useCases: '应用场景',
-    docs: '申请内测',
+    docs: '文档中心',
     cta: '开始体验',
   },
 };
@@ -43,12 +43,12 @@ export function Navbar() {
       { href: `/${lang}#architecture`, text: t.architecture, docs: false },
       { href: `/${lang}#security`, text: t.security, docs: false },
       { href: `/${lang}#use-cases`, text: t.useCases, docs: false },
-      { href: `/${lang}/beta`, text: t.docs, docs: true },
+      { href: `/${lang}/docs`, text: t.docs, docs: true },
     ],
     [lang, t.architecture, t.docs, t.product, t.security, t.useCases]
   );
 
-  const docsActive = pathname.startsWith(`/${lang}/beta`);
+  const docsActive = pathname.startsWith(`/${lang}/docs`);
 
   useEffect(() => {
     let raf = 0;
@@ -159,7 +159,10 @@ export function Navbar() {
           >
             <Github className="h-4 w-4" />
           </a>
-          <a href="https://app.clouisle.asia" target="_blank" rel="noopener noreferrer" className="cl-btn-primary h-10 px-4 text-sm">
+          <a
+            href="https://app.clouisle.asia"
+            className="cl-btn-primary h-10 px-4 text-sm"
+          >
             {t.cta}
           </a>
         </div>
@@ -213,10 +216,10 @@ export function Navbar() {
               </Link>
               <a
                 href="https://app.clouisle.asia"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="mt-2 rounded-lg bg-white px-3 py-2 text-sm font-medium text-zinc-900"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                }}
               >
                 {t.cta}
               </a>

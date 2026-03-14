@@ -1,23 +1,38 @@
 import type { MetadataRoute } from 'next';
 import { source } from '@/lib/source';
 import { i18n } from '@/lib/i18n';
+import { SITE_URL } from '@/lib/seo';
 
-const baseUrl = 'https://clouisle.asia';
+const baseUrl = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
+  const homeAlternates = Object.fromEntries(
+    i18n.languages.map((lang) => [lang, `${baseUrl}/${lang}`]),
+  );
+  const homeAlternatesWithDefault = {
+    ...homeAlternates,
+    'x-default': `${baseUrl}/${i18n.defaultLanguage}`,
+  };
+
+  // Root entry for language redirect/discovery
+  entries.push({
+    url: baseUrl,
+    changeFrequency: 'weekly',
+    priority: 0.9,
+    alternates: {
+      languages: homeAlternatesWithDefault,
+    },
+  });
 
   // Homepage for each language
   for (const lang of i18n.languages) {
     entries.push({
       url: `${baseUrl}/${lang}`,
-      lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1.0,
       alternates: {
-        languages: Object.fromEntries(
-          i18n.languages.map((l) => [l, `${baseUrl}/${l}`]),
-        ),
+        languages: homeAlternatesWithDefault,
       },
     });
   }
@@ -26,15 +41,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const lang of i18n.languages) {
     const pages = source.getPages(lang);
     for (const page of pages) {
+      const pageAlternates = Object.fromEntries(
+        i18n.languages.map((locale) => [locale, `${baseUrl}/${locale}${page.url}`]),
+      );
+
       entries.push({
         url: `${baseUrl}/${lang}${page.url}`,
-        lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: 0.7,
         alternates: {
-          languages: Object.fromEntries(
-            i18n.languages.map((l) => [l, `${baseUrl}/${l}${page.url}`]),
-          ),
+          languages: {
+            ...pageAlternates,
+            'x-default': `${baseUrl}/${i18n.defaultLanguage}${page.url}`,
+          },
         },
       });
     }

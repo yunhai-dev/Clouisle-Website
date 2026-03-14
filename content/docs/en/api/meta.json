@@ -1,7 +1,0 @@
-{
-  "title": "API Reference",
-  "description": "API documentation",
-  "root": true,
-  "icon": "Code",
-  "pages": ["overview", "authentication", "agents", "workflows", "knowledge-base", "webhooks"]
-}

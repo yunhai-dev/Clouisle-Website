@@ -3,7 +3,19 @@ import { createMDX } from 'fumadocs-mdx/next';
 
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+    ],
+  },
 };
 
 const withMDX = createMDX({

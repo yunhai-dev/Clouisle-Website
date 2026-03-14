@@ -3,6 +3,18 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { i18n } from "@/lib/i18n";
+import {
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_ALT,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_WIDTH,
+  SITE_URL,
+  getAlternateLang,
+  getHomeSeoCopy,
+  getLocale,
+  getSiteName,
+  isZh,
+} from "@/lib/seo";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -38,41 +50,69 @@ const { provider } = defineI18nUI(i18n, {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const isZh = lang === 'zh';
-  const altLang = isZh ? 'en' : 'zh';
-  const title = isZh ? '云屿 - 企业级 AI 平台' : 'Clouisle - Enterprise AI Platform';
-  const description = isZh
-    ? '云屿将 AI Agent、工作流编排与企业级知识检索整合到同一平台'
-    : 'Clouisle combines AI agents, workflow orchestration, and enterprise-grade knowledge retrieval into one platform';
+  const zh = isZh(lang);
+  const altLang = getAlternateLang(lang);
+  const { title, description, keywords } = getHomeSeoCopy(lang);
+  const siteName = getSiteName(lang);
+  const canonicalPath = `/${lang}`;
+  const alternatePath = `/${altLang}`;
 
   return {
-    metadataBase: new URL('https://clouisle.asia'),
+    metadataBase: new URL(SITE_URL),
     title: {
       default: title,
-      template: isZh ? '%s | 云屿' : '%s | Clouisle',
+      template: zh ? '%s | 云屿' : '%s | Clouisle',
     },
     description,
+    keywords,
+    applicationName: siteName,
+    category: zh ? '企业级 AI 平台' : 'Enterprise AI Platform',
+    authors: [{ name: 'Clouisle' }],
+    creator: 'Clouisle',
+    publisher: 'Clouisle',
     icons: {
       icon: '/clouisle-light.png',
       apple: '/clouisle-light.png',
     },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+    },
     openGraph: {
       title,
       description,
-      siteName: isZh ? '云屿' : 'Clouisle',
-      locale: isZh ? 'zh_CN' : 'en_US',
+      siteName,
+      locale: getLocale(lang),
       type: 'website',
+      url: canonicalPath,
+      images: [
+        {
+          url: DEFAULT_OG_IMAGE,
+          width: DEFAULT_OG_IMAGE_WIDTH,
+          height: DEFAULT_OG_IMAGE_HEIGHT,
+          alt: DEFAULT_OG_IMAGE_ALT,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [DEFAULT_OG_IMAGE],
     },
     alternates: {
-      canonical: `/${lang}`,
+      canonical: canonicalPath,
       languages: {
-        [lang]: `/${lang}`,
-        [altLang]: `/${altLang}`,
+        [lang]: canonicalPath,
+        [altLang]: alternatePath,
+        'x-default': '/en',
       },
     },
   };

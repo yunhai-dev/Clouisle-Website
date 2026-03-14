@@ -174,8 +174,6 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="https://app.clouisle.asia"
-              target="_blank"
-              rel="noopener noreferrer"
               className="cl-btn-primary cl-magnetic"
               ref={magneticPrimaryRef as React.Ref<HTMLAnchorElement>}
             >

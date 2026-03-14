@@ -1,7 +1,0 @@
-{
-  "title": "Deployment",
-  "description": "Deploy Clouisle to production",
-  "root": true,
-  "icon": "Server",
-  "pages": ["overview", "docker", "kubernetes", "environment-variables"]
-}

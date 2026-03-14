@@ -6,6 +6,7 @@ import { copy } from './data/copy';
 import { useReducedMotionPreference } from './hooks/use-reduced-motion';
 import { useRevealAnimation } from './hooks/use-reveal';
 import { useCardGlow } from './hooks/use-card-glow';
+import { BrandLoader } from './brand-loader';
 import { HeroSection } from './sections/hero-section';
 import { WhySection } from './sections/why-section';
 import { CapabilitiesSection } from './sections/capabilities-section';
@@ -28,6 +29,7 @@ export function MarketingHomePage({ lang }: MarketingHomePageProps) {
 
   return (
     <div ref={scopeRef} className="cl-home-shell">
+      <BrandLoader reducedMotion={reducedMotion} />
       <div className="cl-noise-overlay" aria-hidden="true" />
 
       <HeroSection locale={locale} t={t} reducedMotion={reducedMotion} />
@@ -52,7 +54,7 @@ export function MarketingHomePage({ lang }: MarketingHomePageProps) {
 
       <div className="cl-section-divider mx-auto max-w-7xl" />
 
-      <FinalCtaSection locale={locale} t={t} reducedMotion={reducedMotion} />
+      <FinalCtaSection t={t} reducedMotion={reducedMotion} />
     </div>
   );
 }

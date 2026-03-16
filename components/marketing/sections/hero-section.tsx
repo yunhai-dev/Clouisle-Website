@@ -72,6 +72,17 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
         const orbTwo = hero.querySelector('.cl-orb-two');
         const arc = hero.querySelector('.cl-arc');
         const grid = hero.querySelector('.cl-grid-overlay');
+        const spotlight = hero.querySelector('.cl-hero-spotlight');
+        const vignette = hero.querySelector('.cl-hero-vignette');
+        const copy = hero.querySelector('.cl-hero-copy');
+        const badge = hero.querySelector('.cl-hero-badge');
+        const title = hero.querySelector('.cl-hero-title-wrap');
+        const subtitle = hero.querySelector('.cl-hero-subtitle');
+        const body = hero.querySelector('.cl-hero-body');
+        const ctas = hero.querySelector('.cl-hero-cta-row');
+        const banner = hero.querySelector('.cl-hero-banner-wrap');
+        const stats = hero.querySelector('.cl-hero-stats');
+        const trust = hero.querySelector('.cl-hero-trust');
 
         const tl = g.timeline({
           scrollTrigger: {
@@ -82,17 +93,29 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
           },
         });
 
-        if (orbOne) tl.to(orbOne, { y: 120, ease: 'none' }, 0);
-        if (orbTwo) tl.to(orbTwo, { y: -80, ease: 'none' }, 0);
-        if (arc) tl.to(arc, { y: 60, opacity: 0, ease: 'none' }, 0);
-        if (grid) tl.to(grid, { opacity: 0, ease: 'none' }, 0);
+        if (spotlight) tl.to(spotlight, { y: -90, scale: 1.14, opacity: 0.28, ease: 'none' }, 0);
+        if (vignette) tl.to(vignette, { opacity: 0.92, ease: 'none' }, 0);
+        if (orbOne) tl.to(orbOne, { y: 150, x: 24, ease: 'none' }, 0);
+        if (orbTwo) tl.to(orbTwo, { y: -92, x: -18, ease: 'none' }, 0);
+        if (arc) tl.to(arc, { y: 78, opacity: 0.08, ease: 'none' }, 0);
+        if (grid) tl.to(grid, { y: 36, opacity: 0.04, ease: 'none' }, 0);
+        if (copy) tl.to(copy, { y: 34, opacity: 0.96, ease: 'none' }, 0);
+        if (badge) tl.to(badge, { y: 18, opacity: 0.84, ease: 'none' }, 0);
+        if (title) tl.to(title, { y: 54, scale: 0.978, ease: 'none' }, 0);
+        if (subtitle) tl.to(subtitle, { y: 72, opacity: 0.78, ease: 'none' }, 0);
+        if (body) tl.to(body, { y: 92, opacity: 0.64, ease: 'none' }, 0);
+        if (ctas) tl.to(ctas, { y: 110, opacity: 0.56, ease: 'none' }, 0);
+        if (banner) tl.to(banner, { y: 138, scale: 1.06, ease: 'none' }, 0);
+        if (stats) tl.to(stats, { y: 96, opacity: 0.66, ease: 'none' }, 0);
+        if (trust) tl.to(trust, { y: 62, opacity: 0.5, ease: 'none' }, 0);
 
         // Banner tilt: separate ScrollTrigger tied to the banner element itself
         const bannerGlass = hero.querySelector('.cl-hero-banner-glass');
         if (bannerGlass) {
           g.to(bannerGlass, {
-            rotateX: 0,
-            scale: 1,
+            rotateX: 2,
+            y: -18,
+            scale: 1.02,
             ease: 'none',
             scrollTrigger: {
               trigger: bannerGlass,
@@ -151,27 +174,31 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
 
   return (
     <section ref={heroRef} className="cl-hero-section">
+      <div className="cl-hero-vignette" aria-hidden="true" />
+      <div className="cl-hero-spotlight" aria-hidden="true" />
       <div className="cl-grid-overlay" aria-hidden="true" />
       <div className="cl-orb cl-orb-one" aria-hidden="true" />
       <div className="cl-orb cl-orb-two" aria-hidden="true" />
       <div className="cl-arc" aria-hidden="true" />
 
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-6 pb-32 pt-48 text-center lg:px-12">
-        <div className="flex flex-col items-center">
-          <span className="cl-badge">{t.badge}</span>
+        <div className="cl-hero-copy flex flex-col items-center">
+          <span className="cl-badge cl-hero-badge">{t.badge}</span>
 
-          <h1 className="cl-gradient-heading mt-8 text-5xl font-semibold leading-[1.08] sm:text-6xl lg:text-7xl xl:text-8xl">
-            {t.title}
-          </h1>
-          <p className="mt-4 text-2xl font-medium text-zinc-300 sm:text-3xl lg:text-4xl">
+          <div className="cl-hero-title-wrap">
+            <h1 className="cl-gradient-heading mt-8 text-5xl font-semibold leading-[1.08] sm:text-6xl lg:text-7xl xl:text-8xl">
+              {t.title}
+            </h1>
+          </div>
+          <p className="cl-hero-subtitle mt-4 text-2xl font-medium text-zinc-300 sm:text-3xl lg:text-4xl">
             {t.titleSub}
           </p>
 
-          <p className="mt-7 max-w-3xl text-lg leading-relaxed text-zinc-400">
+          <p className="cl-hero-body mt-7 max-w-3xl text-lg leading-relaxed text-zinc-400">
             {t.subtitle}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div className="cl-hero-cta-row mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="https://app.clouisle.asia"
               className="cl-btn-primary cl-magnetic"
@@ -192,7 +219,7 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
 
           {/* Product hero screenshot */}
           {t.heroImage && (
-            <div className="cl-hero-banner mt-14 w-full max-w-5xl">
+            <div className="cl-hero-banner cl-hero-banner-wrap mt-14 w-full max-w-5xl">
               <div className="cl-hero-banner-glass">
                 <Image
                   src={t.heroImage}
@@ -206,7 +233,7 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
             </div>
           )}
 
-          <div className="mt-12 grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="cl-hero-stats mt-12 grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
             {t.stats.map(item => (
               <StatCounter
                 key={item.label}
@@ -219,16 +246,23 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
         </div>
       </div>
 
-      <div data-reveal className="reveal-item mx-auto w-full max-w-7xl px-6 pb-8 lg:px-12">
+      <div data-reveal className="reveal-item cl-hero-trust mx-auto w-full max-w-7xl px-6 pb-8 lg:px-12">
         <div data-glow className="cl-trust-strip">
           <p className="text-center text-xs uppercase tracking-[0.16em] text-zinc-400">{t.trustLine}</p>
           <div className="cl-provider-marquee" aria-hidden="true">
             <div ref={marqueeRef} className="cl-provider-track">
-              {tripleProviders.map((provider, index) => (
-                <span key={`${provider}-${index}`} className="cl-provider-pill">
-                  {provider}
-                </span>
-              ))}
+              {tripleProviders.map((provider, index) => {
+                const Icon = provider.icon;
+
+                return (
+                  <span key={`${provider.name}-${index}`} className="cl-provider-pill">
+                    <span className="cl-provider-pill-icon" aria-hidden="true">
+                      <Icon size={16} />
+                    </span>
+                    <span>{provider.name}</span>
+                  </span>
+                );
+              })}
             </div>
           </div>
         </div>

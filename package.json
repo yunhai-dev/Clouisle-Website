@@ -11,6 +11,7 @@
     "deploy": "bun run build && wrangler deploy"
   },
   "dependencies": {
+    "@lobehub/icons": "^5.0.1",
     "@radix-ui/react-slot": "^1.2.4",
     "@types/mdx": "^2.0.13",
     "class-variance-authority": "^0.7.1",

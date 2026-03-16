@@ -80,9 +80,9 @@ export default async function HomePage({ params }: HomePageProps) {
             '云屿是企业级 AI 平台，把 AI Agent、工作流编排与企业知识检索整合到统一控制平面，支持生产环境治理。',
         },
         {
-          question: 'Traditional RAG 和 Agentic RAG 有什么区别？',
+          question: 'Naive RAG 和 Agentic RAG 有什么区别？',
           answer:
-            'Traditional RAG 适合低延迟、可预测检索场景；Agentic RAG 适合多步推理、工具调用和跨源综合的复杂任务。',
+            'Naive RAG 适合低延迟、可预测检索场景；Agentic RAG 适合多步推理、工具调用和跨源综合的复杂任务。',
         },
         {
           question: '云屿支持私有化部署吗？',
@@ -103,7 +103,7 @@ export default async function HomePage({ params }: HomePageProps) {
         {
           question: 'What is the difference between traditional RAG and agentic RAG?',
           answer:
-            'Traditional RAG fits low-latency and predictable retrieval use cases. Agentic RAG fits complex, multi-step tasks that require tool calling and iterative reasoning.',
+            'Naive RAG fits low-latency and predictable retrieval use cases. Agentic RAG fits complex, multi-step tasks that require tool calling and iterative reasoning.',
         },
         {
           question: 'Does Clouisle support private deployment?',

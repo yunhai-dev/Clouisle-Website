@@ -276,7 +276,7 @@ export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
         </div>
 
         <div className="cl-loader-hud">
-          <div className="cl-loader-brand">System Loading</div>
+          <div className="cl-loader-brand">Clouisle Loading</div>
           <div className="cl-loader-progress-row">
             <div className="cl-loader-progress-bar">
               <div

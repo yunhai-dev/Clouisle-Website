@@ -51,7 +51,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       description:
         'Ingest PDFs, DOCX, XLSX and more, then run chunking, vector indexing, and async processing on enterprise scale.',
       highlights: [
-        'Traditional RAG for fast, deterministic retrieval-backed responses',
+        'Naive RAG for fast, deterministic retrieval-backed responses',
         'Agentic RAG for multi-step reasoning, tool calling, and adaptive retrieval',
         'Policy-based routing between strategies for quality, latency, and cost balance',
       ],
@@ -161,7 +161,7 @@ export const capabilities: Record<Locale, Capability[]> = {
       description:
         '支持 PDF/DOCX/XLSX 等多格式导入，提供智能切块、向量索引与异步处理能力。',
       highlights: [
-        'Traditional RAG：适合低延迟、可预测的检索问答场景',
+        'Naive RAG：适合低延迟、可预测的检索问答场景',
         'Agentic RAG：适合多步推理、工具调用与动态检索场景',
         '支持按策略路由请求，在质量、成本与时延之间取得平衡',
       ],

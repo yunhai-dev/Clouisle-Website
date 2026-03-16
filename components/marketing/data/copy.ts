@@ -28,13 +28,41 @@ export const copy: Record<Locale, CopyData> = {
     capabilitiesTitle: 'Platform capabilities',
     capabilitiesLead:
       'Each capability is designed to shorten delivery cycles, improve response quality, and reduce operational risk in enterprise AI deployments.',
+    memoryEyebrow: 'Memory Layer',
+    memoryTitle: 'Global user memory built for agents',
+    memoryBody:
+      'Clouisle maintains a persistent, permission-aware memory profile for each user. This memory is only used inside agents, helping them inherit context, preferences, and prior actions across sessions without repeated setup.',
+    memoryCards: [
+      {
+        label: 'Persistent Context',
+        title: 'Keep user profile and session context inside agents',
+        summary:
+          'Agents can reuse one durable memory record that carries role, preferences, recent objectives, and accepted outputs across sessions.',
+        items: [
+          'Role, workspace, and response preferences',
+          'Recent conversations, approved drafts, and next actions',
+          'Fewer repeated questions during agent handoff',
+        ],
+      },
+      {
+        label: 'Governed Recall',
+        title: 'Share memory across agents within access boundaries',
+        summary:
+          'Memory is only available to agents, and every read or write stays scoped by tenant, team, and role policies.',
+        items: [
+          'Tenant isolation and retention controls',
+          'RBAC-aware memory retrieval',
+          'Auditable recall, update, and agent handoff events',
+        ],
+      },
+    ],
     ragEyebrow: 'RAG Strategy',
-    ragTitle: 'Traditional RAG + Agentic RAG',
+    ragTitle: 'Naive RAG + Agentic RAG',
     ragSubtitle:
       'Use the right retrieval strategy for each business scenario. Clouisle supports both deterministic retrieval and agent-driven reasoning workflows.',
     ragModes: [
       {
-        badge: 'Traditional RAG',
+        badge: 'Naive RAG',
         title: 'Fast, predictable, retrieval-first responses',
         summary:
           'Best for policy Q&A, documentation lookup, and scenarios where stable grounding and low latency are critical.',
@@ -243,13 +271,41 @@ export const copy: Record<Locale, CopyData> = {
     capabilitiesTitle: '核心平台能力',
     capabilitiesLead:
       '每项能力都围绕企业落地设计，目标是缩短交付周期、提升结果质量，并降低上线与运维风险。',
+    memoryEyebrow: '记忆层',
+    memoryTitle: '面向 Agent 的全局用户记忆',
+    memoryBody:
+      '云屿为每位用户维护一份持久、权限感知的记忆画像。该记忆仅在 Agent 内使用，让 Agent 能在跨会话过程中继承上下文、偏好与历史动作，不再反复询问同样的问题。',
+    memoryCards: [
+      {
+        label: '持续上下文',
+        title: '在 Agent 内持续保留用户画像与会话上下文',
+        summary:
+          'Agent 可复用同一份持久记忆，统一继承角色、偏好、当前目标和已确认结果。',
+        items: [
+          '角色、工作空间与回复偏好',
+          '最近会话、已确认草稿与下一步动作',
+          '减少 Agent 交接时的重复询问',
+        ],
+      },
+      {
+        label: '受控召回',
+        title: '让多个 Agent 在权限边界内共享记忆',
+        summary:
+          '记忆仅供 Agent 使用，每次写入与召回都受租户、团队与角色策略约束。',
+        items: [
+          '租户隔离与保留策略',
+          '基于 RBAC 的记忆检索',
+          '可审计的召回、更新与 Agent 交接记录',
+        ],
+      },
+    ],
     ragEyebrow: 'RAG 策略',
-    ragTitle: 'Traditional RAG + Agentic RAG',
+    ragTitle: 'Naive RAG + Agentic RAG',
     ragSubtitle:
       '针对不同业务复杂度选择不同检索策略。云屿同时支持确定性检索与 Agent 驱动推理两种范式。',
     ragModes: [
       {
-        badge: 'Traditional RAG',
+        badge: 'Naive RAG',
         title: '低延迟、可预测的检索增强回答',
         summary:
           '适用于制度问答、文档检索、标准化知识查询等强调稳定性与可追溯性的场景。',

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { cn } from '@/lib/utils';
-import type { CopyData, ArchitectureScaleTarget } from '../data/types';
+import type { CopyData, ArchitectureScaleTarget, Locale } from '../data/types';
 
 type GSAPStatic = typeof import('gsap').gsap;
 
@@ -12,9 +12,57 @@ function getRevealStyle(delay: number): CSSProperties {
 }
 
 interface ArchitectureSectionProps {
+  locale: Locale;
   t: CopyData;
   reducedMotion: boolean;
 }
+
+const architectureStory = {
+  en: [
+    {
+      label: 'Scene 01',
+      title: 'Ingress and control plane',
+      body: 'User traffic enters through a thin web gateway, then hands execution to a centralized orchestration layer.',
+    },
+    {
+      label: 'Scene 02',
+      title: 'Retrieval and transactional state',
+      body: 'Knowledge retrieval and durable state stay separated, so recall remains fast without losing auditability.',
+    },
+    {
+      label: 'Scene 03',
+      title: 'Runtime and scheduled execution',
+      body: 'Async workers and schedulers turn agent decisions into background execution, follow-up, and timed automation.',
+    },
+    {
+      label: 'Scene 04',
+      title: 'Elastic scale-out',
+      body: 'Vector and worker clusters expand horizontally when throughput grows, while the control plane keeps policies stable.',
+    },
+  ],
+  zh: [
+    {
+      label: 'Scene 01',
+      title: '入口与控制平面',
+      body: '用户请求先经过轻量 Web 网关，再进入统一的编排控制层，完成模型、工具与策略路由。',
+    },
+    {
+      label: 'Scene 02',
+      title: '检索与事务状态',
+      body: '知识检索和持久状态被拆分治理，在保证召回速度的同时保留审计和配置一致性。',
+    },
+    {
+      label: 'Scene 03',
+      title: '运行时与定时执行',
+      body: '异步 Worker 与调度服务把 Agent 的决策转成后台执行、补偿流程和时间触发任务。',
+    },
+    {
+      label: 'Scene 04',
+      title: '弹性扩展',
+      body: '当吞吐增长时，向量层与任务层可以横向扩容，而控制平面继续保持统一策略与观测。',
+    },
+  ],
+} satisfies Record<Locale, Array<{ label: string; title: string; body: string }>>;
 
 /* ------------------------------------------------------------------ */
 /*  Helpers: measure node positions relative to canvas, build paths   */
@@ -56,11 +104,15 @@ function curve(a: Pt, b: Pt) {
 
 /* ------------------------------------------------------------------ */
 
-export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionProps) {
+export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSectionProps) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
   const architectureRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [isCompactViewport, setIsCompactViewport] = useState(false);
+  const [storyStep, setStoryStep] = useState(0);
+  const storyItems = architectureStory[locale];
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -143,8 +195,10 @@ export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionPro
 
   /* ---------- GSAP entrance animation ---------- */
   useEffect(() => {
+    const section = sectionRef.current;
+    const stage = stageRef.current;
     const architecture = architectureRef.current;
-    if (!architecture || reducedMotion) return;
+    if (!section || !stage || !architecture || reducedMotion) return;
 
     let cancelled = false;
     let ctx: ReturnType<GSAPStatic['context']> | undefined;
@@ -172,6 +226,10 @@ export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionPro
         const scaleStreams = g.utils.toArray<SVGPathElement>('.cl-arch-scale-stream');
         const pulses = g.utils.toArray<HTMLElement>('[data-arch-pulse]');
         const clusterNodes = g.utils.toArray<HTMLElement>('[data-arch-cluster-target]');
+        const storyCards = g.utils.toArray<HTMLElement>('[data-arch-story-card]');
+        const copyShell = section.querySelector('.cl-architecture-copy-shell');
+        const canvas = canvasRef.current;
+        const beam = architecture.querySelector('.cl-architecture-beam');
 
         const applyClusterFocus = (target?: ArchitectureScaleTarget) => {
           if (target) {
@@ -207,9 +265,9 @@ export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionPro
         const entrance = g.timeline({
           defaults: { ease: 'power3.out' },
           scrollTrigger: {
-            trigger: architecture,
+            trigger: stage,
             start: 'top 78%',
-            end: 'bottom 38%',
+            end: 'bottom 58%',
             toggleActions: 'play none none reverse',
           },
         });
@@ -240,6 +298,47 @@ export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionPro
           )
           .to(pulses, { opacity: 0.9, scale: 1, duration: 0.48, stagger: 0.08 }, 0.9)
           .add(() => expandNodes(), 0.86);
+
+        if (!isCompactViewport) {
+          architecture.setAttribute('data-story-step', '0');
+          setStoryStep(0);
+
+          const storyTimeline = g.timeline({
+            scrollTrigger: {
+              trigger: stage,
+              start: 'top top+=96',
+              end: 'bottom bottom-=96',
+              scrub: 0.8,
+              onUpdate: self => {
+                const nextStep = Math.min(
+                  storyItems.length - 1,
+                  Math.floor(self.progress * storyItems.length)
+                );
+                architecture.setAttribute('data-story-step', String(nextStep));
+                setStoryStep(prev => (prev === nextStep ? prev : nextStep));
+              },
+            },
+          });
+
+          if (copyShell) storyTimeline.to(copyShell, { y: -22, ease: 'none' }, 0);
+          storyTimeline.to(architecture, { '--arch-glow': 1.15, y: -18, ease: 'none' }, 0);
+          if (canvas) storyTimeline.to(canvas, { scale: 1.018, ease: 'none' }, 0);
+          if (beam) storyTimeline.to(beam, { y: 150, opacity: 0.88, ease: 'none' }, 0);
+          if (storyCards.length > 0) {
+            storyTimeline.to(
+              storyCards,
+              {
+                y: index => (index % 2 === 0 ? -10 : -4),
+                ease: 'none',
+                stagger: 0.04,
+              },
+              0
+            );
+          }
+        } else {
+          architecture.removeAttribute('data-story-step');
+          setStoryStep(0);
+        }
 
         for (const node of clusterNodes) {
           const onEnter = (event: PointerEvent) => {
@@ -276,7 +375,7 @@ export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionPro
         const onCanvasLeave = () => applyClusterFocus();
         architecture.addEventListener('pointerleave', onCanvasLeave);
         hoverCleanup.push(() => architecture.removeEventListener('pointerleave', onCanvasLeave));
-      }, architecture);
+      }, section);
     };
 
     init();
@@ -286,9 +385,11 @@ export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionPro
       for (const tween of expandQueue) tween.kill();
       hoverCleanup.forEach(cleanup => cleanup());
       architecture.removeAttribute('data-cluster-focus');
+      architecture.removeAttribute('data-story-step');
+      setStoryStep(0);
       ctx?.revert();
     };
-  }, [reducedMotion, drawPaths]);
+  }, [reducedMotion, isCompactViewport, drawPaths, storyItems.length]);
 
   /* ---------- redraw on resize ---------- */
   useEffect(() => {
@@ -300,181 +401,214 @@ export function ArchitectureSection({ t, reducedMotion }: ArchitectureSectionPro
   /* ---------- connection definitions (just slot counts for SVG elements) ---------- */
   const mainLinkCount = 6;
   const scaleLinkCount = 6; // 3 vector + 3 worker
+  const mainLinkGroups = ['gateway', 'retrieval', 'retrieval', 'runtime', 'runtime', 'runtime'] as const;
 
   return (
-    <section id="architecture" className="mx-auto w-full max-w-7xl px-6 pb-24 pt-28 lg:px-12">
-      <div data-reveal className="reveal-item" style={getRevealStyle(70)}>
-        <p className="text-xs uppercase tracking-[0.16em] text-zinc-400">{t.architectureEyebrow}</p>
-        <h2 className="mt-3 text-3xl font-semibold text-zinc-100">{t.architectureTitle}</h2>
-        <p className="mt-4 max-w-3xl text-base leading-relaxed text-zinc-300">{t.architectureBody}</p>
-      </div>
-
-      <div
-        className="mt-8 cl-architecture-shell"
-        ref={architectureRef}
-      >
-        <div className="cl-architecture-canvas" ref={canvasRef}>
-          <svg
-            className="cl-arch-svg"
-            ref={svgRef}
-            preserveAspectRatio="xMidYMid meet"
-            aria-hidden="true"
-          >
-            <g className="cl-arch-links">
-              {Array.from({ length: mainLinkCount }, (_, i) => (
-                <path key={i} className="cl-arch-link" d="M0 0" />
-              ))}
-            </g>
-            <g className="cl-arch-scale-links">
-              {Array.from({ length: scaleLinkCount }, (_, i) => {
-                const target = i < 3 ? 'vector' : 'worker';
-                return <path key={i} className="cl-arch-scale-link" data-arch-scale-target={target} d="M0 0" />;
-              })}
-            </g>
-            <g className="cl-arch-streams">
-              {Array.from({ length: mainLinkCount }, (_, i) => (
-                <path key={i} className="cl-arch-stream" d="M0 0" />
-              ))}
-            </g>
-            <g className="cl-arch-scale-streams">
-              {Array.from({ length: scaleLinkCount }, (_, i) => {
-                const target = i < 3 ? 'vector' : 'worker';
-                return <path key={i} className="cl-arch-scale-stream" data-arch-scale-target={target} d="M0 0" />;
-              })}
-            </g>
-          </svg>
-
-          {t.architectureNodes.map(node => {
-            const clusterTarget =
-              node.key === 'vector' || node.key === 'worker'
-                ? (node.key as ArchitectureScaleTarget)
-                : undefined;
-
-            return (
-              <div
-                key={node.key}
-                data-arch-node
-                data-arch-key={node.key}
-                data-arch-cluster-target={clusterTarget}
-                className={cn('cl-arch-node', `cl-arch-node-${node.key}`)}
-              >
-                <p className="cl-node-title">{node.title}</p>
-                <p className="cl-node-text">{node.subtitle}</p>
-                <p className="cl-node-meta">{node.meta}</p>
-                <p data-arch-expand className="cl-node-expand">
-                  {node.expansion}
-                </p>
-              </div>
-            );
-          })}
-
+    <section ref={sectionRef} id="architecture" className="cl-architecture-section mx-auto w-full max-w-7xl px-6 pb-24 pt-28 lg:px-12">
+      <div ref={stageRef} className="cl-architecture-stage mt-8 lg:mt-0">
+        <div className="cl-architecture-copy-column">
           <div
-            className="cl-arch-scale-lane cl-arch-scale-lane-vector"
-            style={{
-              position: 'absolute',
-              zIndex: 4,
-              display: 'grid',
-              gap: isCompactViewport ? '0.42rem' : '0.46rem',
-              gridTemplateColumns: isCompactViewport ? '1fr' : 'repeat(3, minmax(0, 1fr))',
-              width: isCompactViewport ? 'min(43%, 210px)' : 'min(36%, 360px)',
-              left: isCompactViewport ? '4%' : '2%',
-              bottom: isCompactViewport ? '2.2%' : '1.6%',
-            }}
+            data-reveal
+            data-glow="interactive"
+            className="reveal-item cl-architecture-copy-shell"
+            style={getRevealStyle(70)}
           >
-            {t.architectureScaleNodes
-              .filter(node => node.target === 'vector')
-              .map(node => (
-                <div
-                  key={node.id}
-                  data-arch-scale-node
-                  data-arch-scale-target={node.target}
-                  className={cn('cl-arch-scale-node', node.variant === 'add' ? 'cl-arch-scale-node-add' : null)}
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    borderRadius: '0.74rem',
-                    border: `1px ${node.variant === 'add' ? 'dashed' : 'solid'} ${
-                      node.variant === 'add' ? 'rgba(166, 214, 255, 0.34)' : 'rgba(255, 255, 255, 0.11)'
-                    }`,
-                    background: node.variant === 'add' ? 'rgba(13, 20, 34, 0.82)' : 'rgba(10, 16, 27, 0.74)',
-                    padding: isCompactViewport ? '0.42rem 0.48rem' : '0.44rem 0.5rem',
-                  }}
-                >
-                  {node.variant === 'add' ? (
-                    <span
-                      className="cl-arch-scale-plus"
-                      aria-hidden="true"
-                      style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                      +
-                    </span>
-                  ) : null}
-                  <p className="cl-arch-scale-title" style={{ fontSize: '0.63rem', lineHeight: 1.2 }}>
-                    {node.title}
-                  </p>
-                  <p className="cl-arch-scale-detail" style={{ fontSize: '0.62rem', lineHeight: 1.35 }}>
-                    {node.detail}
-                  </p>
-                </div>
-              ))}
-          </div>
+            <p className="text-xs uppercase tracking-[0.16em] text-zinc-400">{t.architectureEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-semibold text-zinc-100">{t.architectureTitle}</h2>
+            <p className="mt-4 text-base leading-relaxed text-zinc-300">{t.architectureBody}</p>
 
-          <div
-            className="cl-arch-scale-lane cl-arch-scale-lane-worker"
-            style={{
-              position: 'absolute',
-              zIndex: 4,
-              display: 'grid',
-              gap: isCompactViewport ? '0.42rem' : '0.46rem',
-              gridTemplateColumns: isCompactViewport ? '1fr' : 'repeat(3, minmax(0, 1fr))',
-              width: isCompactViewport ? 'min(43%, 210px)' : 'min(36%, 360px)',
-              right: isCompactViewport ? '4%' : '2%',
-              bottom: isCompactViewport ? '2.2%' : '1.6%',
-            }}
-          >
-            {t.architectureScaleNodes
-              .filter(node => node.target === 'worker')
-              .map(node => (
-                <div
-                  key={node.id}
-                  data-arch-scale-node
-                  data-arch-scale-target={node.target}
-                  className={cn('cl-arch-scale-node', node.variant === 'add' ? 'cl-arch-scale-node-add' : null)}
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    borderRadius: '0.74rem',
-                    border: `1px ${node.variant === 'add' ? 'dashed' : 'solid'} ${
-                      node.variant === 'add' ? 'rgba(166, 214, 255, 0.34)' : 'rgba(255, 255, 255, 0.11)'
-                    }`,
-                    background: node.variant === 'add' ? 'rgba(13, 20, 34, 0.82)' : 'rgba(10, 16, 27, 0.74)',
-                    padding: isCompactViewport ? '0.42rem 0.48rem' : '0.44rem 0.5rem',
-                  }}
+            <div className="cl-architecture-story-list">
+              {storyItems.map((item, index) => (
+                <article
+                  key={item.title}
+                  data-arch-story-card
+                  className={cn('cl-architecture-story-card', storyStep === index && 'is-active')}
                 >
-                  {node.variant === 'add' ? (
-                    <span
-                      className="cl-arch-scale-plus"
-                      aria-hidden="true"
-                      style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                      +
-                    </span>
-                  ) : null}
-                  <p className="cl-arch-scale-title" style={{ fontSize: '0.63rem', lineHeight: 1.2 }}>
-                    {node.title}
-                  </p>
-                  <p className="cl-arch-scale-detail" style={{ fontSize: '0.62rem', lineHeight: 1.35 }}>
-                    {node.detail}
-                  </p>
-                </div>
+                  <p className="cl-architecture-story-label">{item.label}</p>
+                  <h3 className="cl-architecture-story-title">{item.title}</h3>
+                  <p className="cl-architecture-story-body">{item.body}</p>
+                </article>
               ))}
+            </div>
           </div>
-
-          <span data-arch-pulse data-arch-pulse-target="backend" className="cl-arch-pulse" />
-          <span data-arch-pulse data-arch-pulse-target="vector" className="cl-arch-pulse" />
-          <span data-arch-pulse data-arch-pulse-target="worker" className="cl-arch-pulse" />
         </div>
-        <div className="cl-architecture-beam" aria-hidden="true" />
+
+        <div className="cl-architecture-visual-column">
+          <div className="cl-architecture-shell" ref={architectureRef}>
+            <div className="cl-architecture-canvas" ref={canvasRef}>
+              <svg
+                className="cl-arch-svg"
+                ref={svgRef}
+                preserveAspectRatio="xMidYMid meet"
+                aria-hidden="true"
+              >
+                <g className="cl-arch-links">
+                  {Array.from({ length: mainLinkCount }, (_, i) => (
+                    <path
+                      key={i}
+                      className="cl-arch-link"
+                      data-arch-story-group={mainLinkGroups[i]}
+                      d="M0 0"
+                    />
+                  ))}
+                </g>
+                <g className="cl-arch-scale-links">
+                  {Array.from({ length: scaleLinkCount }, (_, i) => {
+                    const target = i < 3 ? 'vector' : 'worker';
+                    return <path key={i} className="cl-arch-scale-link" data-arch-scale-target={target} d="M0 0" />;
+                  })}
+                </g>
+                <g className="cl-arch-streams">
+                  {Array.from({ length: mainLinkCount }, (_, i) => (
+                    <path
+                      key={i}
+                      className="cl-arch-stream"
+                      data-arch-story-group={mainLinkGroups[i]}
+                      d="M0 0"
+                    />
+                  ))}
+                </g>
+                <g className="cl-arch-scale-streams">
+                  {Array.from({ length: scaleLinkCount }, (_, i) => {
+                    const target = i < 3 ? 'vector' : 'worker';
+                    return <path key={i} className="cl-arch-scale-stream" data-arch-scale-target={target} d="M0 0" />;
+                  })}
+                </g>
+              </svg>
+
+              {t.architectureNodes.map(node => {
+                const clusterTarget =
+                  node.key === 'vector' || node.key === 'worker'
+                    ? (node.key as ArchitectureScaleTarget)
+                    : undefined;
+
+                return (
+                  <div
+                    key={node.key}
+                    data-arch-node
+                    data-arch-key={node.key}
+                    data-arch-cluster-target={clusterTarget}
+                    className={cn('cl-arch-node', `cl-arch-node-${node.key}`)}
+                  >
+                    <p className="cl-node-title">{node.title}</p>
+                    <p className="cl-node-text">{node.subtitle}</p>
+                    <p className="cl-node-meta">{node.meta}</p>
+                    <p data-arch-expand className="cl-node-expand">
+                      {node.expansion}
+                    </p>
+                  </div>
+                );
+              })}
+
+              <div
+                className="cl-arch-scale-lane cl-arch-scale-lane-vector"
+                style={{
+                  position: 'absolute',
+                  zIndex: 4,
+                  display: 'grid',
+                  gap: isCompactViewport ? '0.42rem' : '0.46rem',
+                  gridTemplateColumns: isCompactViewport ? '1fr' : 'repeat(3, minmax(0, 1fr))',
+                  width: isCompactViewport ? 'min(43%, 210px)' : 'min(36%, 360px)',
+                  left: isCompactViewport ? '4%' : '2%',
+                  bottom: isCompactViewport ? '2.2%' : '1.6%',
+                }}
+              >
+                {t.architectureScaleNodes
+                  .filter(node => node.target === 'vector')
+                  .map(node => (
+                    <div
+                      key={node.id}
+                      data-arch-scale-node
+                      data-arch-scale-target={node.target}
+                      className={cn('cl-arch-scale-node', node.variant === 'add' ? 'cl-arch-scale-node-add' : null)}
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        borderRadius: '0.74rem',
+                        border: `1px ${node.variant === 'add' ? 'dashed' : 'solid'} ${
+                          node.variant === 'add' ? 'rgba(166, 214, 255, 0.34)' : 'rgba(255, 255, 255, 0.11)'
+                        }`,
+                        background: node.variant === 'add' ? 'rgba(13, 20, 34, 0.82)' : 'rgba(10, 16, 27, 0.74)',
+                        padding: isCompactViewport ? '0.42rem 0.48rem' : '0.44rem 0.5rem',
+                      }}
+                    >
+                      {node.variant === 'add' ? (
+                        <span
+                          className="cl-arch-scale-plus"
+                          aria-hidden="true"
+                          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          +
+                        </span>
+                      ) : null}
+                      <p className="cl-arch-scale-title" style={{ fontSize: '0.63rem', lineHeight: 1.2 }}>
+                        {node.title}
+                      </p>
+                      <p className="cl-arch-scale-detail" style={{ fontSize: '0.62rem', lineHeight: 1.35 }}>
+                        {node.detail}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+
+              <div
+                className="cl-arch-scale-lane cl-arch-scale-lane-worker"
+                style={{
+                  position: 'absolute',
+                  zIndex: 4,
+                  display: 'grid',
+                  gap: isCompactViewport ? '0.42rem' : '0.46rem',
+                  gridTemplateColumns: isCompactViewport ? '1fr' : 'repeat(3, minmax(0, 1fr))',
+                  width: isCompactViewport ? 'min(43%, 210px)' : 'min(36%, 360px)',
+                  right: isCompactViewport ? '4%' : '2%',
+                  bottom: isCompactViewport ? '2.2%' : '1.6%',
+                }}
+              >
+                {t.architectureScaleNodes
+                  .filter(node => node.target === 'worker')
+                  .map(node => (
+                    <div
+                      key={node.id}
+                      data-arch-scale-node
+                      data-arch-scale-target={node.target}
+                      className={cn('cl-arch-scale-node', node.variant === 'add' ? 'cl-arch-scale-node-add' : null)}
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        borderRadius: '0.74rem',
+                        border: `1px ${node.variant === 'add' ? 'dashed' : 'solid'} ${
+                          node.variant === 'add' ? 'rgba(166, 214, 255, 0.34)' : 'rgba(255, 255, 255, 0.11)'
+                        }`,
+                        background: node.variant === 'add' ? 'rgba(13, 20, 34, 0.82)' : 'rgba(10, 16, 27, 0.74)',
+                        padding: isCompactViewport ? '0.42rem 0.48rem' : '0.44rem 0.5rem',
+                      }}
+                    >
+                      {node.variant === 'add' ? (
+                        <span
+                          className="cl-arch-scale-plus"
+                          aria-hidden="true"
+                          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          +
+                        </span>
+                      ) : null}
+                      <p className="cl-arch-scale-title" style={{ fontSize: '0.63rem', lineHeight: 1.2 }}>
+                        {node.title}
+                      </p>
+                      <p className="cl-arch-scale-detail" style={{ fontSize: '0.62rem', lineHeight: 1.35 }}>
+                        {node.detail}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+
+              <span data-arch-pulse data-arch-pulse-target="backend" className="cl-arch-pulse" />
+              <span data-arch-pulse data-arch-pulse-target="vector" className="cl-arch-pulse" />
+              <span data-arch-pulse data-arch-pulse-target="worker" className="cl-arch-pulse" />
+            </div>
+            <div className="cl-architecture-beam" aria-hidden="true" />
+          </div>
+        </div>
       </div>
     </section>
   );

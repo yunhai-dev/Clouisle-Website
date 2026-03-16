@@ -66,6 +66,13 @@ export interface Advantage {
   proof: string;
 }
 
+export interface MemoryCard {
+  label: string;
+  title: string;
+  summary: string;
+  items: string[];
+}
+
 export interface DeliveryStep {
   title: string;
   detail: string;
@@ -87,6 +94,10 @@ export interface CopyData {
   whyPoints: string[];
   capabilitiesTitle: string;
   capabilitiesLead: string;
+  memoryEyebrow: string;
+  memoryTitle: string;
+  memoryBody: string;
+  memoryCards: MemoryCard[];
   ragEyebrow: string;
   ragTitle: string;
   ragSubtitle: string;

@@ -99,7 +99,7 @@ export function Navbar() {
       )}
     >
       <div
-        className="mx-auto flex h-14 items-center justify-between px-4 backdrop-blur-sm transition-all duration-700 ease-in-out md:px-6"
+        className="mx-auto flex h-14 items-center justify-between px-4 backdrop-blur-sm transition-all duration-700 ease-in-out md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:px-6"
         style={{
           maxWidth: isAtTop ? '100%' : '72rem',
           borderRadius: isAtTop ? '0' : '0.75rem',
@@ -109,12 +109,12 @@ export function Navbar() {
           boxShadow: isAtTop ? 'none' : '0 10px 15px -3px rgba(0,0,0,0.2)',
         }}
       >
-        <Link href={`/${lang}`} className="flex items-center gap-2">
+        <Link href={`/${lang}`} className="flex items-center gap-2 md:min-w-0">
           <Image src="/clouise-dark.svg" alt="Clouisle" width={24} height={24} />
           <span className="text-sm font-medium tracking-wide text-zinc-100">{lang === 'zh' ? '云屿' : 'Clouisle'}</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center justify-center gap-1 md:flex">
           {navLinks.map(link =>
             link.href.startsWith('http') ? (
               <a
@@ -143,7 +143,7 @@ export function Navbar() {
           )}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center justify-self-end gap-2 md:flex">
           <Link
             href={altPath}
             aria-label={altLang === 'zh' ? '切换到中文' : 'Switch to English'}

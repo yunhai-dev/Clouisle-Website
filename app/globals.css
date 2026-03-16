@@ -50,7 +50,7 @@ body {
   --cl-loader-line: rgba(255, 255, 255, 0.94);
   --cl-loader-line-soft: rgba(255, 255, 255, 0.14);
   --cl-loader-text-soft: rgba(255, 255, 255, 0.5);
-  --cl-loader-accent: rgba(212, 194, 255, 0.9);
+  --cl-loader-accent: rgba(126, 170, 255, 0.9);
   position: fixed;
   inset: 0;
   z-index: 2147483647;
@@ -58,14 +58,15 @@ body {
   place-items: center;
   overflow: hidden;
   background-color: #04060a;
-  background-image:
-    linear-gradient(#04060a, #04060a),
+  background:
     radial-gradient(circle at center, rgba(255, 255, 255, 0.04), transparent 28%),
-    linear-gradient(180deg, #09111a 0%, #04060a 100%);
+    linear-gradient(180deg, rgba(4, 6, 10, 0.8), rgba(4, 6, 10, 0.96));
+  backdrop-filter: blur(12px);
   transition:
     opacity 1.1s cubic-bezier(.22, 1, .36, 1),
     visibility 1.1s cubic-bezier(.22, 1, .36, 1),
-    transform 1.2s cubic-bezier(.22, 1, .36, 1);
+    transform 1.2s cubic-bezier(.22, 1, .36, 1),
+    backdrop-filter 1.1s cubic-bezier(.22, 1, .36, 1);
 }
 
 .cl-loader.is-hiding {
@@ -73,6 +74,15 @@ body {
   visibility: hidden;
   pointer-events: none;
   transform: scale(1.03);
+  backdrop-filter: blur(18px);
+}
+
+.cl-loader.is-hiding::before {
+  opacity: 0.22;
+}
+
+.cl-loader.is-hiding::after {
+  opacity: 0;
 }
 
 .cl-loader::before,
@@ -92,15 +102,17 @@ body {
   mask-image: radial-gradient(circle at center, black 16%, transparent 72%);
   opacity: 0.9;
   animation: cl-loader-grid-drift 16s linear infinite;
+  transition: opacity 0.9s cubic-bezier(.22, 1, .36, 1);
 }
 
 .cl-loader::after {
   z-index: 2;
   background:
     radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 20%),
-    radial-gradient(circle at center, rgba(180, 167, 214, 0.12), transparent 36%);
+    radial-gradient(circle at center, rgba(126, 170, 255, 0.08), transparent 36%);
   filter: blur(20px);
   animation: cl-loader-aura-pulse 4s ease-in-out infinite;
+  transition: opacity 0.7s cubic-bezier(.22, 1, .36, 1);
 }
 
 .cl-loader-inner {
@@ -111,6 +123,16 @@ body {
   align-items: center;
   gap: 26px;
   transform: translateY(-10px);
+  transition:
+    opacity 0.78s cubic-bezier(.22, 1, .36, 1),
+    transform 0.92s cubic-bezier(.22, 1, .36, 1),
+    filter 0.92s cubic-bezier(.22, 1, .36, 1);
+}
+
+.cl-loader.is-hiding .cl-loader-inner {
+  opacity: 0;
+  transform: translateY(-34px) scale(1.02);
+  filter: blur(8px);
 }
 
 .cl-loader-stage {
@@ -122,6 +144,14 @@ body {
   isolation: isolate;
   transform-style: preserve-3d;
   animation: cl-loader-stage-float 6s ease-in-out infinite;
+  transition:
+    opacity 0.7s cubic-bezier(.22, 1, .36, 1),
+    filter 0.7s cubic-bezier(.22, 1, .36, 1);
+}
+
+.cl-loader.is-hiding .cl-loader-stage {
+  opacity: 0;
+  filter: blur(6px);
 }
 
 .cl-loader-core-glow {
@@ -129,7 +159,7 @@ body {
   inset: 18%;
   border-radius: 50%;
   background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.16), rgba(180, 167, 214, 0.12) 32%, transparent 72%);
+    radial-gradient(circle, rgba(255, 255, 255, 0.16), rgba(126, 170, 255, 0.08) 32%, transparent 72%);
   filter: blur(28px);
   animation: cl-loader-core-glow 3.4s ease-in-out infinite;
 }
@@ -141,7 +171,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-    0 0 24px rgba(180, 167, 214, 0.14),
+    0 0 24px rgba(126, 170, 255, 0.08),
     0 0 60px rgba(255, 255, 255, 0.04);
   animation: cl-loader-ring-rotate 12s linear infinite;
 }
@@ -158,7 +188,7 @@ body {
       transparent 310deg,
       rgba(255, 255, 255, 0.04) 328deg,
       rgba(255, 255, 255, 0.7) 343deg,
-      rgba(212, 194, 255, 0.95) 350deg,
+      rgba(132, 177, 255, 0.95) 350deg,
       transparent 360deg
     );
   filter: blur(2px);
@@ -195,7 +225,7 @@ body {
     transparent 0%,
     rgba(255, 255, 255, 0) 10%,
     rgba(255, 255, 255, 0.9) 50%,
-    rgba(212, 194, 255, 0.85) 58%,
+    rgba(126, 170, 255, 0.85) 58%,
     rgba(255, 255, 255, 0) 100%
   );
   filter: blur(1px);
@@ -207,8 +237,8 @@ body {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(212, 194, 255, 0) 10%,
-    rgba(212, 194, 255, 0.26) 50%,
+    rgba(126, 170, 255, 0) 10%,
+    rgba(126, 170, 255, 0.26) 50%,
     rgba(255, 255, 255, 0) 100%
   );
   filter: blur(12px);
@@ -231,7 +261,20 @@ body {
   filter:
     drop-shadow(0 0 6px rgba(255, 255, 255, 0.12))
     drop-shadow(0 0 18px rgba(255, 255, 255, 0.08))
-    drop-shadow(0 0 40px rgba(180, 167, 214, 0.12));
+    drop-shadow(0 0 40px rgba(126, 170, 255, 0.08));
+  transition:
+    opacity 0.68s cubic-bezier(.22, 1, .36, 1),
+    transform 0.76s cubic-bezier(.22, 1, .36, 1),
+    filter 0.76s cubic-bezier(.22, 1, .36, 1);
+}
+
+.cl-loader.is-hiding .cl-loader-logo-shell svg {
+  opacity: 0;
+  transform: scale(1.045);
+  filter:
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.08))
+    drop-shadow(0 0 20px rgba(126, 170, 255, 0.06))
+    blur(6px);
 }
 
 .cl-loader-base-path {
@@ -240,6 +283,11 @@ body {
   stroke-width: 9;
   stroke-linecap: round;
   stroke-linejoin: round;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  opacity: 0;
+  animation: cl-loader-base-path-reveal var(--dur) cubic-bezier(.62, .02, .24, .99) forwards;
+  animation-delay: var(--delay);
 }
 
 .cl-loader-draw-path {
@@ -258,6 +306,7 @@ body {
 .cl-loader-flow-glow,
 .cl-loader-flow-thin {
   fill: none;
+  stroke-dasharray: var(--segment) var(--len);
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: 0;
@@ -321,6 +370,16 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  transition:
+    opacity 0.64s cubic-bezier(.22, 1, .36, 1),
+    transform 0.72s cubic-bezier(.22, 1, .36, 1),
+    filter 0.72s cubic-bezier(.22, 1, .36, 1);
+}
+
+.cl-loader.is-hiding .cl-loader-hud {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  filter: blur(5px);
 }
 
 .cl-loader-brand {
@@ -358,10 +417,10 @@ body {
 .cl-loader-progress-fill {
   position: absolute;
   inset: 0 auto 0 0;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.15), #fff 45%, rgba(212, 194, 255, 0.95));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.15), #fff 45%, rgba(132, 177, 255, 0.95));
   box-shadow:
     0 0 12px rgba(255, 255, 255, 0.3),
-    0 0 28px rgba(180, 167, 214, 0.24);
+    0 0 28px rgba(126, 170, 255, 0.18);
   transition: width 0.22s linear;
 }
 
@@ -477,6 +536,22 @@ body {
 
 @keyframes cl-loader-draw-path {
   to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes cl-loader-base-path-reveal {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: var(--len);
+  }
+
+  35% {
+    opacity: 0.42;
+  }
+
+  100% {
+    opacity: 1;
     stroke-dashoffset: 0;
   }
 }
@@ -1660,6 +1735,16 @@ body {
     scroll-behavior: auto;
   }
 
+  .cl-loader,
+  .cl-loader::before,
+  .cl-loader::after,
+  .cl-loader-inner,
+  .cl-loader-stage,
+  .cl-loader-logo-shell svg,
+  .cl-loader-hud {
+    transition-duration: 0.01ms !important;
+  }
+
   .cl-loader::before,
   .cl-loader::after,
   .cl-loader-stage,
@@ -1672,6 +1757,7 @@ body {
   .cl-loader-flow-main,
   .cl-loader-flow-glow,
   .cl-loader-flow-thin,
+  .cl-loader-base-path,
   .cl-loader-node-glow,
   .cl-loader-node,
   .cl-loader-pixel {

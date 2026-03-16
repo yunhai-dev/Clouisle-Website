@@ -7,6 +7,22 @@ interface BrandLoaderProps {
   reducedMotion: boolean;
 }
 
+const PRIMARY_PATH_VARS = {
+  ['--dur' as string]: '2.55s',
+  ['--delay' as string]: '0s',
+  ['--len' as string]: '2133.691650390625',
+  ['--flow-start' as string]: '2133.691650390625',
+  ['--segment' as string]: '240',
+};
+
+const SECONDARY_PATH_VARS = {
+  ['--dur' as string]: '1.7s',
+  ['--delay' as string]: '1.48s',
+  ['--len' as string]: '394.45556640625',
+  ['--flow-start' as string]: '394.45556640625',
+  ['--segment' as string]: '150',
+};
+
 export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
   const [phase, setPhase] = useState<'visible' | 'hiding' | 'hidden'>('visible');
   const [progress, setProgress] = useState(0);
@@ -28,29 +44,6 @@ export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
       window.cancelAnimationFrame(frame);
     };
   }, []);
-
-  useEffect(() => {
-    if (phase === 'hidden') return;
-
-    const root = rootRef.current;
-    if (!root) return;
-
-    const drawPaths = root.querySelectorAll<SVGPathElement>('.cl-loader-draw-path');
-    const flowPaths = root.querySelectorAll<SVGPathElement>(
-      '.cl-loader-flow-main, .cl-loader-flow-glow, .cl-loader-flow-thin',
-    );
-
-    drawPaths.forEach((path) => {
-      path.style.setProperty('--len', `${path.getTotalLength()}`);
-    });
-
-    flowPaths.forEach((path) => {
-      const length = path.getTotalLength();
-      const segment = Math.max(150, Math.min(240, length * 0.24));
-      path.style.strokeDasharray = `${segment} ${length}`;
-      path.style.setProperty('--flow-start', `${length}`);
-    });
-  }, [phase]);
 
   useEffect(() => {
     if (phase !== 'visible') return;
@@ -158,11 +151,11 @@ export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
     };
   }, [phase, reducedMotion]);
 
-  if (!isPortalReady || phase === 'hidden') return null;
+  if (phase === 'hidden') return null;
 
   const progressValue = Math.floor(progress);
 
-  return createPortal(
+  const loader = (
     <div
       ref={rootRef}
       className={`cl-loader${phase === 'hiding' ? ' is-hiding' : ''}`}
@@ -183,16 +176,16 @@ export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
                   <stop offset="18%" stopColor="#ffffff" stopOpacity="0.05" />
                   <stop offset="40%" stopColor="#ffffff" stopOpacity="0.36" />
                   <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
-                  <stop offset="58%" stopColor="#ddd2ff" stopOpacity="0.95" />
+                  <stop offset="58%" stopColor="#d8e8ff" stopOpacity="0.95" />
                   <stop offset="72%" stopColor="#ffffff" stopOpacity="0.28" />
                   <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
                 </linearGradient>
 
                 <linearGradient id="cl-loader-flow-glow-gradient" x1="0" y1="0" x2="440" y2="0">
                   <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-                  <stop offset="36%" stopColor="#c8b7ff" stopOpacity="0.08" />
+                  <stop offset="36%" stopColor="#8fb8ff" stopOpacity="0.08" />
                   <stop offset="50%" stopColor="#ffffff" stopOpacity="0.68" />
-                  <stop offset="62%" stopColor="#baa4ff" stopOpacity="0.2" />
+                  <stop offset="62%" stopColor="#7aa8ff" stopOpacity="0.2" />
                   <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
                 </linearGradient>
 
@@ -208,54 +201,56 @@ export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
               <g>
                 <path
                   className="cl-loader-base-path"
+                  style={PRIMARY_PATH_VARS}
                   d="M219.623 293.938L266.623 341.948L266.623 425.948L219.623 378.948L219.623 293.938L219.623 287.551L219.623 223.499L219.623 159.448L219.623 57.4475L173.623 10.9475L173.623 115.948L219.623 159.448M219.623 159.448L266.623 114.448L266.623 68.9475M219.623 287.551L173.623 333.948L173.623 383.948M219.623 223.499L147.047 223.499L55.1226 223.499L10.6226 269.448L103.123 269.448L147.047 223.499M147.047 223.499L103.123 179.448L83.1226 179.448M219.623 223.499L119.623 322.948M219.623 223.499L317.623 126.948M219.623 223.499L288.503 223.499L385.123 223.499L429.623 269.448L334.623 269.448L288.503 223.499"
                 />
                 <path
                   className="cl-loader-base-path"
+                  style={SECONDARY_PATH_VARS}
                   d="M312.623 223.448L341.123 174.948L372.623 223.448M121.123 125.448L219.623 223.448L319.123 323.948"
                 />
 
                 <path
                   className="cl-loader-draw-path"
-                  style={{ ['--dur' as string]: '2.55s', ['--delay' as string]: '0s' }}
+                  style={PRIMARY_PATH_VARS}
                   d="M219.623 293.938L266.623 341.948L266.623 425.948L219.623 378.948L219.623 293.938L219.623 287.551L219.623 223.499L219.623 159.448L219.623 57.4475L173.623 10.9475L173.623 115.948L219.623 159.448M219.623 159.448L266.623 114.448L266.623 68.9475M219.623 287.551L173.623 333.948L173.623 383.948M219.623 223.499L147.047 223.499L55.1226 223.499L10.6226 269.448L103.123 269.448L147.047 223.499M147.047 223.499L103.123 179.448L83.1226 179.448M219.623 223.499L119.623 322.948M219.623 223.499L317.623 126.948M219.623 223.499L288.503 223.499L385.123 223.499L429.623 269.448L334.623 269.448L288.503 223.499"
                 />
                 <path
                   className="cl-loader-draw-path"
-                  style={{ ['--dur' as string]: '1.7s', ['--delay' as string]: '1.48s' }}
+                  style={SECONDARY_PATH_VARS}
                   d="M312.623 223.448L341.123 174.948L372.623 223.448M121.123 125.448L219.623 223.448L319.123 323.948"
                 />
 
                 <path
                   className="cl-loader-flow-glow"
-                  style={{ ['--dur' as string]: '2.55s', ['--delay' as string]: '0s' }}
+                  style={PRIMARY_PATH_VARS}
                   d="M219.623 293.938L266.623 341.948L266.623 425.948L219.623 378.948L219.623 293.938L219.623 287.551L219.623 223.499L219.623 159.448L219.623 57.4475L173.623 10.9475L173.623 115.948L219.623 159.448M219.623 159.448L266.623 114.448L266.623 68.9475M219.623 287.551L173.623 333.948L173.623 383.948M219.623 223.499L147.047 223.499L55.1226 223.499L10.6226 269.448L103.123 269.448L147.047 223.499M147.047 223.499L103.123 179.448L83.1226 179.448M219.623 223.499L119.623 322.948M219.623 223.499L317.623 126.948M219.623 223.499L288.503 223.499L385.123 223.499L429.623 269.448L334.623 269.448L288.503 223.499"
                 />
                 <path
                   className="cl-loader-flow-glow"
-                  style={{ ['--dur' as string]: '1.7s', ['--delay' as string]: '1.48s' }}
+                  style={SECONDARY_PATH_VARS}
                   d="M312.623 223.448L341.123 174.948L372.623 223.448M121.123 125.448L219.623 223.448L319.123 323.948"
                 />
 
                 <path
                   className="cl-loader-flow-main"
-                  style={{ ['--dur' as string]: '2.55s', ['--delay' as string]: '0s' }}
+                  style={PRIMARY_PATH_VARS}
                   d="M219.623 293.938L266.623 341.948L266.623 425.948L219.623 378.948L219.623 293.938L219.623 287.551L219.623 223.499L219.623 159.448L219.623 57.4475L173.623 10.9475L173.623 115.948L219.623 159.448M219.623 159.448L266.623 114.448L266.623 68.9475M219.623 287.551L173.623 333.948L173.623 383.948M219.623 223.499L147.047 223.499L55.1226 223.499L10.6226 269.448L103.123 269.448L147.047 223.499M147.047 223.499L103.123 179.448L83.1226 179.448M219.623 223.499L119.623 322.948M219.623 223.499L317.623 126.948M219.623 223.499L288.503 223.499L385.123 223.499L429.623 269.448L334.623 269.448L288.503 223.499"
                 />
                 <path
                   className="cl-loader-flow-main"
-                  style={{ ['--dur' as string]: '1.7s', ['--delay' as string]: '1.48s' }}
+                  style={SECONDARY_PATH_VARS}
                   d="M312.623 223.448L341.123 174.948L372.623 223.448M121.123 125.448L219.623 223.448L319.123 323.948"
                 />
 
                 <path
                   className="cl-loader-flow-thin"
-                  style={{ ['--dur' as string]: '2.55s', ['--delay' as string]: '0s' }}
+                  style={PRIMARY_PATH_VARS}
                   d="M219.623 293.938L266.623 341.948L266.623 425.948L219.623 378.948L219.623 293.938L219.623 287.551L219.623 223.499L219.623 159.448L219.623 57.4475L173.623 10.9475L173.623 115.948L219.623 159.448M219.623 159.448L266.623 114.448L266.623 68.9475M219.623 287.551L173.623 333.948L173.623 383.948M219.623 223.499L147.047 223.499L55.1226 223.499L10.6226 269.448L103.123 269.448L147.047 223.499M147.047 223.499L103.123 179.448L83.1226 179.448M219.623 223.499L119.623 322.948M219.623 223.499L317.623 126.948M219.623 223.499L288.503 223.499L385.123 223.499L429.623 269.448L334.623 269.448L288.503 223.499"
                 />
                 <path
                   className="cl-loader-flow-thin"
-                  style={{ ['--dur' as string]: '1.7s', ['--delay' as string]: '1.48s' }}
+                  style={SECONDARY_PATH_VARS}
                   d="M312.623 223.448L341.123 174.948L372.623 223.448M121.123 125.448L219.623 223.448L319.123 323.948"
                 />
 
@@ -281,7 +276,7 @@ export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
         </div>
 
         <div className="cl-loader-hud">
-          <div className="cl-loader-brand">Clouisle Loading</div>
+          <div className="cl-loader-brand">System Loading</div>
           <div className="cl-loader-progress-row">
             <div className="cl-loader-progress-bar">
               <div
@@ -292,11 +287,14 @@ export function BrandLoader({ reducedMotion }: BrandLoaderProps) {
             <div className="cl-loader-progress-text">{progressValue}%</div>
           </div>
           <div className="cl-loader-sub">
-            Enterprise AI <span>initializing</span>
+            Neural interface <span>initializing</span>
           </div>
         </div>
       </div>
-    </div>,
-    document.body,
+    </div>
   );
+
+  if (!isPortalReady) return loader;
+
+  return createPortal(loader, document.body);
 }

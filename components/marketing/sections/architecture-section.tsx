@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
-import { cn } from '@/lib/utils';
-import type { CopyData, ArchitectureScaleTarget, Locale } from '../data/types';
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { cn } from "@/lib/utils";
+import type { CopyData, ArchitectureScaleTarget, Locale } from "../data/types";
 
-type GSAPStatic = typeof import('gsap').gsap;
+type GSAPStatic = typeof import("gsap").gsap;
 
 function getRevealStyle(delay: number): CSSProperties {
-  return { ['--reveal-delay' as string]: `${delay}ms` };
+  return { ["--reveal-delay" as string]: `${delay}ms` };
 }
 
 interface ArchitectureSectionProps {
@@ -20,55 +20,61 @@ interface ArchitectureSectionProps {
 const architectureStory = {
   en: [
     {
-      label: 'Scene 01',
-      title: 'Ingress and control plane',
-      body: 'User traffic enters through a thin web gateway, then hands execution to a centralized orchestration layer.',
+      label: "Scene 01",
+      title: "Ingress and control plane",
+      body: "User traffic enters through a thin web gateway, then hands execution to a centralized orchestration layer.",
     },
     {
-      label: 'Scene 02',
-      title: 'Retrieval and transactional state',
-      body: 'Knowledge retrieval and durable state stay separated, so recall remains fast without losing auditability.',
+      label: "Scene 02",
+      title: "Retrieval and transactional state",
+      body: "Knowledge retrieval and durable state stay separated, so recall remains fast without losing auditability.",
     },
     {
-      label: 'Scene 03',
-      title: 'Runtime and scheduled execution',
-      body: 'Async workers and schedulers turn agent decisions into background execution, follow-up, and timed automation.',
+      label: "Scene 03",
+      title: "Runtime and scheduled execution",
+      body: "Async workers and schedulers turn agent decisions into background execution, follow-up, and timed automation.",
     },
     {
-      label: 'Scene 04',
-      title: 'Elastic scale-out',
-      body: 'Vector and worker clusters expand horizontally when throughput grows, while the control plane keeps policies stable.',
+      label: "Scene 04",
+      title: "Elastic scale-out",
+      body: "Vector and worker clusters expand horizontally when throughput grows, while the control plane keeps policies stable.",
     },
   ],
   zh: [
     {
-      label: 'Scene 01',
-      title: '入口与控制平面',
-      body: '用户请求先经过轻量 Web 网关，再进入统一的编排控制层，完成模型、工具与策略路由。',
+      label: "Scene 01",
+      title: "入口与控制平面",
+      body: "用户请求先经过轻量 Web 网关，再进入统一的编排控制层，完成模型、工具与策略路由。",
     },
     {
-      label: 'Scene 02',
-      title: '检索与事务状态',
-      body: '知识检索和持久状态被拆分治理，在保证召回速度的同时保留审计和配置一致性。',
+      label: "Scene 02",
+      title: "检索与事务状态",
+      body: "知识检索和持久状态被拆分治理，在保证召回速度的同时保留审计和配置一致性。",
     },
     {
-      label: 'Scene 03',
-      title: '运行时与定时执行',
-      body: '异步 Worker 与调度服务把 Agent 的决策转成后台执行、补偿流程和时间触发任务。',
+      label: "Scene 03",
+      title: "运行时与定时执行",
+      body: "异步 Worker 与调度服务把 Agent 的决策转成后台执行、补偿流程和时间触发任务。",
     },
     {
-      label: 'Scene 04',
-      title: '弹性扩展',
-      body: '当吞吐增长时，向量层与任务层可以横向扩容，而控制平面继续保持统一策略与观测。',
+      label: "Scene 04",
+      title: "弹性扩展",
+      body: "当吞吐增长时，向量层与任务层可以横向扩容，而控制平面继续保持统一策略与观测。",
     },
   ],
-} satisfies Record<Locale, Array<{ label: string; title: string; body: string }>>;
+} satisfies Record<
+  Locale,
+  Array<{ label: string; title: string; body: string }>
+>;
 
 /* ------------------------------------------------------------------ */
 /*  Helpers: measure node positions relative to canvas, build paths   */
 /* ------------------------------------------------------------------ */
 
-interface Pt { x: number; y: number }
+interface Pt {
+  x: number;
+  y: number;
+}
 
 function bottomCenter(el: HTMLElement, canvas: HTMLElement): Pt {
   const er = el.getBoundingClientRect();
@@ -104,7 +110,11 @@ function curve(a: Pt, b: Pt) {
 
 /* ------------------------------------------------------------------ */
 
-export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSectionProps) {
+export function ArchitectureSection({
+  locale,
+  t,
+  reducedMotion,
+}: ArchitectureSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const architectureRef = useRef<HTMLDivElement | null>(null);
@@ -115,12 +125,12 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
   const storyItems = architectureStory[locale];
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const media = window.matchMedia('(max-width: 1023px)');
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(max-width: 1023px)");
     const onChange = () => setIsCompactViewport(media.matches);
     onChange();
-    media.addEventListener('change', onChange);
-    return () => media.removeEventListener('change', onChange);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
   }, []);
 
   /* ---------- draw / redraw SVG paths from live DOM positions ---------- */
@@ -131,58 +141,85 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
 
     const cw = canvas.offsetWidth;
     const ch = canvas.offsetHeight;
-    svg.setAttribute('viewBox', `0 0 ${cw} ${ch}`);
+    svg.setAttribute("viewBox", `0 0 ${cw} ${ch}`);
 
     const nodeMap: Record<string, HTMLElement> = {};
-    canvas.querySelectorAll<HTMLElement>('[data-arch-node]').forEach(el => {
+    canvas.querySelectorAll<HTMLElement>("[data-arch-node]").forEach((el) => {
       const key = el.dataset.archKey;
       if (key) nodeMap[key] = el;
     });
 
     const scaleMap: Record<string, HTMLElement[]> = { vector: [], worker: [] };
-    canvas.querySelectorAll<HTMLElement>('[data-arch-scale-node]').forEach(el => {
-      const target = el.dataset.archScaleTarget as 'vector' | 'worker' | undefined;
-      if (target) scaleMap[target].push(el);
-    });
+    canvas
+      .querySelectorAll<HTMLElement>("[data-arch-scale-node]")
+      .forEach((el) => {
+        const target = el.dataset.archScaleTarget as
+          | "vector"
+          | "worker"
+          | undefined;
+        if (target) scaleMap[target].push(el);
+      });
 
     // --- main links ---
     const mainPaths: string[] = [];
     const { frontend, backend, vector, pgsql, worker, scheduler } = nodeMap;
 
-    if (frontend && backend) mainPaths.push(line(bottomCenter(frontend, canvas), topCenter(backend, canvas)));
-    if (backend && vector)   mainPaths.push(curve(bottomCenter(backend, canvas), topCenter(vector, canvas)));
-    if (backend && pgsql)    mainPaths.push(curve(bottomCenter(backend, canvas), topCenter(pgsql, canvas)));
-    if (backend && worker)   mainPaths.push(curve(bottomCenter(backend, canvas), topCenter(worker, canvas)));
-    if (scheduler && worker)  mainPaths.push(line(bottomCenter(scheduler, canvas), topCenter(worker, canvas)));
-    if (scheduler && backend) mainPaths.push(curve(bottomCenter(scheduler, canvas), topCenter(backend, canvas)));
+    if (frontend && backend)
+      mainPaths.push(
+        line(bottomCenter(frontend, canvas), topCenter(backend, canvas)),
+      );
+    if (backend && vector)
+      mainPaths.push(
+        curve(bottomCenter(backend, canvas), topCenter(vector, canvas)),
+      );
+    if (backend && pgsql)
+      mainPaths.push(
+        curve(bottomCenter(backend, canvas), topCenter(pgsql, canvas)),
+      );
+    if (backend && worker)
+      mainPaths.push(
+        curve(bottomCenter(backend, canvas), topCenter(worker, canvas)),
+      );
+    if (scheduler && worker)
+      mainPaths.push(
+        line(bottomCenter(scheduler, canvas), topCenter(worker, canvas)),
+      );
+    if (scheduler && backend)
+      mainPaths.push(
+        curve(bottomCenter(scheduler, canvas), topCenter(backend, canvas)),
+      );
 
     // set paths on link elements
-    const linkEls = svg.querySelectorAll<SVGPathElement>('.cl-arch-link');
-    const streamEls = svg.querySelectorAll<SVGPathElement>('.cl-arch-stream');
+    const linkEls = svg.querySelectorAll<SVGPathElement>(".cl-arch-link");
+    const streamEls = svg.querySelectorAll<SVGPathElement>(".cl-arch-stream");
     mainPaths.forEach((d, i) => {
-      if (linkEls[i]) linkEls[i].setAttribute('d', d);
-      if (streamEls[i]) streamEls[i].setAttribute('d', d);
+      if (linkEls[i]) linkEls[i].setAttribute("d", d);
+      if (streamEls[i]) streamEls[i].setAttribute("d", d);
     });
 
     // --- scale links ---
-    const scaleLinkEls = svg.querySelectorAll<SVGPathElement>('.cl-arch-scale-link');
-    const scaleStreamEls = svg.querySelectorAll<SVGPathElement>('.cl-arch-scale-stream');
+    const scaleLinkEls = svg.querySelectorAll<SVGPathElement>(
+      ".cl-arch-scale-link",
+    );
+    const scaleStreamEls = svg.querySelectorAll<SVGPathElement>(
+      ".cl-arch-scale-stream",
+    );
     let si = 0;
-    for (const target of ['vector', 'worker'] as const) {
+    for (const target of ["vector", "worker"] as const) {
       const parent = nodeMap[target];
       if (!parent) continue;
       const from = bottomCenter(parent, canvas);
       for (const child of scaleMap[target]) {
         const to = topCenter(child, canvas);
         const d = curve(from, to);
-        if (scaleLinkEls[si]) scaleLinkEls[si].setAttribute('d', d);
-        if (scaleStreamEls[si]) scaleStreamEls[si].setAttribute('d', d);
+        if (scaleLinkEls[si]) scaleLinkEls[si].setAttribute("d", d);
+        if (scaleStreamEls[si]) scaleStreamEls[si].setAttribute("d", d);
         si++;
       }
     }
 
     // --- pulses ---
-    canvas.querySelectorAll<HTMLElement>('[data-arch-pulse]').forEach(el => {
+    canvas.querySelectorAll<HTMLElement>("[data-arch-pulse]").forEach((el) => {
       const target = el.dataset.archPulseTarget;
       const node = target ? nodeMap[target] : undefined;
       if (node) {
@@ -201,14 +238,14 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
     if (!section || !stage || !architecture || reducedMotion) return;
 
     let cancelled = false;
-    let ctx: ReturnType<GSAPStatic['context']> | undefined;
+    let ctx: ReturnType<GSAPStatic["context"]> | undefined;
     const expandQueue: { kill: () => void }[] = [];
     const hoverCleanup: Array<() => void> = [];
 
     const init = async () => {
       const [{ gsap: g }, { ScrollTrigger: ST }] = await Promise.all([
-        import('gsap'),
-        import('gsap/ScrollTrigger'),
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
       ]);
       if (cancelled) return;
 
@@ -218,24 +255,34 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
       drawPaths();
 
       ctx = g.context(() => {
-        const nodes = g.utils.toArray<HTMLElement>('[data-arch-node]');
-        const links = g.utils.toArray<SVGPathElement>('.cl-arch-link');
-        const streams = g.utils.toArray<SVGPathElement>('.cl-arch-stream');
-        const scaleNodes = g.utils.toArray<HTMLElement>('[data-arch-scale-node]');
-        const scaleLinks = g.utils.toArray<SVGPathElement>('.cl-arch-scale-link');
-        const scaleStreams = g.utils.toArray<SVGPathElement>('.cl-arch-scale-stream');
-        const pulses = g.utils.toArray<HTMLElement>('[data-arch-pulse]');
-        const clusterNodes = g.utils.toArray<HTMLElement>('[data-arch-cluster-target]');
-        const storyCards = g.utils.toArray<HTMLElement>('[data-arch-story-card]');
-        const copyShell = section.querySelector('.cl-architecture-copy-shell');
+        const nodes = g.utils.toArray<HTMLElement>("[data-arch-node]");
+        const links = g.utils.toArray<SVGPathElement>(".cl-arch-link");
+        const streams = g.utils.toArray<SVGPathElement>(".cl-arch-stream");
+        const scaleNodes = g.utils.toArray<HTMLElement>(
+          "[data-arch-scale-node]",
+        );
+        const scaleLinks = g.utils.toArray<SVGPathElement>(
+          ".cl-arch-scale-link",
+        );
+        const scaleStreams = g.utils.toArray<SVGPathElement>(
+          ".cl-arch-scale-stream",
+        );
+        const pulses = g.utils.toArray<HTMLElement>("[data-arch-pulse]");
+        const clusterNodes = g.utils.toArray<HTMLElement>(
+          "[data-arch-cluster-target]",
+        );
+        const storyCards = g.utils.toArray<HTMLElement>(
+          "[data-arch-story-card]",
+        );
+        const copyShell = section.querySelector(".cl-architecture-copy-shell");
         const canvas = canvasRef.current;
-        const beam = architecture.querySelector('.cl-architecture-beam');
+        const beam = architecture.querySelector(".cl-architecture-beam");
 
         const applyClusterFocus = (target?: ArchitectureScaleTarget) => {
           if (target) {
-            architecture.setAttribute('data-cluster-focus', target);
+            architecture.setAttribute("data-cluster-focus", target);
           } else {
-            architecture.removeAttribute('data-cluster-focus');
+            architecture.removeAttribute("data-cluster-focus");
           }
         };
 
@@ -246,14 +293,20 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
         const expandNodes = () => {
           clearExpandQueue();
           nodes.forEach((node, index) => {
-            const tween = g.delayedCall(index * 0.12, () => node.classList.add('is-node-expanded'));
+            const tween = g.delayedCall(index * 0.12, () =>
+              node.classList.add("is-node-expanded"),
+            );
             expandQueue.push(tween);
           });
         };
 
         for (const link of [...links, ...scaleLinks]) {
           const length = link.getTotalLength();
-          g.set(link, { strokeDasharray: length, strokeDashoffset: length, opacity: 0.35 });
+          g.set(link, {
+            strokeDasharray: length,
+            strokeDashoffset: length,
+            opacity: 0.35,
+          });
         }
 
         g.set(nodes, { opacity: 0, y: 24, scale: 0.96 });
@@ -263,118 +316,141 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
         g.set(pulses, { opacity: 0, scale: 0.5 });
 
         const entrance = g.timeline({
-          defaults: { ease: 'power3.out' },
+          defaults: { ease: "power3.out" },
           scrollTrigger: {
             trigger: stage,
-            start: 'top 78%',
-            end: 'bottom 58%',
-            toggleActions: 'play none none reverse',
+            start: "top 78%",
+            end: "bottom 58%",
+            toggleActions: "play none none reverse",
           },
         });
 
         entrance
-          .to(architecture, { '--arch-glow': 1, duration: 0.65 }, 0)
+          .to(architecture, { "--arch-glow": 1, duration: 0.65 }, 0)
           .to(
             nodes,
             { opacity: 1, y: 0, scale: 1, stagger: 0.12, duration: 0.6 },
-            0.08
+            0.08,
           )
           .to(
             links,
-            { strokeDashoffset: 0, opacity: 0.88, duration: 0.92, stagger: 0.07, ease: 'power2.inOut' },
-            0.22
+            {
+              strokeDashoffset: 0,
+              opacity: 0.88,
+              duration: 0.92,
+              stagger: 0.07,
+              ease: "power2.inOut",
+            },
+            0.22,
           )
           .to(
             scaleLinks,
-            { strokeDashoffset: 0, opacity: 0.74, duration: 0.74, stagger: 0.05, ease: 'power2.inOut' },
-            0.46
+            {
+              strokeDashoffset: 0,
+              opacity: 0.74,
+              duration: 0.74,
+              stagger: 0.05,
+              ease: "power2.inOut",
+            },
+            0.46,
           )
           .to(streams, { opacity: 0.92, duration: 0.28 }, 0.86)
           .to(scaleStreams, { opacity: 0.8, duration: 0.28 }, 0.86)
           .to(
             scaleNodes,
             { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.52 },
-            0.62
+            0.62,
           )
-          .to(pulses, { opacity: 0.9, scale: 1, duration: 0.48, stagger: 0.08 }, 0.9)
+          .to(
+            pulses,
+            { opacity: 0.9, scale: 1, duration: 0.48, stagger: 0.08 },
+            0.9,
+          )
           .add(() => expandNodes(), 0.86);
 
         if (!isCompactViewport) {
-          architecture.setAttribute('data-story-step', '0');
+          architecture.setAttribute("data-story-step", "0");
           setStoryStep(0);
 
           const storyTimeline = g.timeline({
             scrollTrigger: {
               trigger: stage,
-              start: 'top top+=96',
-              end: 'bottom bottom-=96',
+              start: "top top+=96",
+              end: "bottom bottom-=96",
               scrub: 0.8,
-              onUpdate: self => {
+              onUpdate: (self) => {
                 const nextStep = Math.min(
                   storyItems.length - 1,
-                  Math.floor(self.progress * storyItems.length)
+                  Math.floor(self.progress * storyItems.length),
                 );
-                architecture.setAttribute('data-story-step', String(nextStep));
-                setStoryStep(prev => (prev === nextStep ? prev : nextStep));
+                architecture.setAttribute("data-story-step", String(nextStep));
+                setStoryStep((prev) => (prev === nextStep ? prev : nextStep));
               },
             },
           });
 
-          if (copyShell) storyTimeline.to(copyShell, { y: -22, ease: 'none' }, 0);
-          storyTimeline.to(architecture, { '--arch-glow': 1.15, y: -18, ease: 'none' }, 0);
-          if (canvas) storyTimeline.to(canvas, { scale: 1.018, ease: 'none' }, 0);
-          if (beam) storyTimeline.to(beam, { y: 150, opacity: 0.88, ease: 'none' }, 0);
+          if (copyShell)
+            storyTimeline.to(copyShell, { y: -22, ease: "none" }, 0);
+          storyTimeline.to(
+            architecture,
+            { "--arch-glow": 1.15, y: -18, ease: "none" },
+            0,
+          );
+          if (canvas)
+            storyTimeline.to(canvas, { scale: 1.018, ease: "none" }, 0);
+          if (beam)
+            storyTimeline.to(beam, { y: 150, opacity: 0.88, ease: "none" }, 0);
           if (storyCards.length > 0) {
             storyTimeline.to(
               storyCards,
               {
-                y: index => (index % 2 === 0 ? -10 : -4),
-                ease: 'none',
+                y: (index) => (index % 2 === 0 ? -10 : -4),
+                ease: "none",
                 stagger: 0.04,
               },
-              0
+              0,
             );
           }
         } else {
-          architecture.removeAttribute('data-story-step');
+          architecture.removeAttribute("data-story-step");
           setStoryStep(0);
         }
 
         for (const node of clusterNodes) {
           const onEnter = (event: PointerEvent) => {
-            const target = (event.currentTarget as HTMLElement).dataset.archClusterTarget as
-              | ArchitectureScaleTarget
-              | undefined;
+            const target = (event.currentTarget as HTMLElement).dataset
+              .archClusterTarget as ArchitectureScaleTarget | undefined;
             applyClusterFocus(target);
           };
           const onLeave = () => applyClusterFocus();
-          node.addEventListener('pointerenter', onEnter);
-          node.addEventListener('pointerleave', onLeave);
+          node.addEventListener("pointerenter", onEnter);
+          node.addEventListener("pointerleave", onLeave);
           hoverCleanup.push(() => {
-            node.removeEventListener('pointerenter', onEnter);
-            node.removeEventListener('pointerleave', onLeave);
+            node.removeEventListener("pointerenter", onEnter);
+            node.removeEventListener("pointerleave", onLeave);
           });
         }
 
         for (const node of scaleNodes) {
           const onEnter = (event: PointerEvent) => {
-            const target = (event.currentTarget as HTMLElement).dataset.archScaleTarget as
-              | ArchitectureScaleTarget
-              | undefined;
+            const target = (event.currentTarget as HTMLElement).dataset
+              .archScaleTarget as ArchitectureScaleTarget | undefined;
             applyClusterFocus(target);
           };
           const onLeave = () => applyClusterFocus();
-          node.addEventListener('pointerenter', onEnter);
-          node.addEventListener('pointerleave', onLeave);
+          node.addEventListener("pointerenter", onEnter);
+          node.addEventListener("pointerleave", onLeave);
           hoverCleanup.push(() => {
-            node.removeEventListener('pointerenter', onEnter);
-            node.removeEventListener('pointerleave', onLeave);
+            node.removeEventListener("pointerenter", onEnter);
+            node.removeEventListener("pointerleave", onLeave);
           });
         }
 
         const onCanvasLeave = () => applyClusterFocus();
-        architecture.addEventListener('pointerleave', onCanvasLeave);
-        hoverCleanup.push(() => architecture.removeEventListener('pointerleave', onCanvasLeave));
+        architecture.addEventListener("pointerleave", onCanvasLeave);
+        hoverCleanup.push(() =>
+          architecture.removeEventListener("pointerleave", onCanvasLeave),
+        );
       }, section);
     };
 
@@ -383,9 +459,9 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
     return () => {
       cancelled = true;
       for (const tween of expandQueue) tween.kill();
-      hoverCleanup.forEach(cleanup => cleanup());
-      architecture.removeAttribute('data-cluster-focus');
-      architecture.removeAttribute('data-story-step');
+      hoverCleanup.forEach((cleanup) => cleanup());
+      architecture.removeAttribute("data-cluster-focus");
+      architecture.removeAttribute("data-story-step");
       setStoryStep(0);
       ctx?.revert();
     };
@@ -394,17 +470,28 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
   /* ---------- redraw on resize ---------- */
   useEffect(() => {
     const onResize = () => drawPaths();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [drawPaths]);
 
   /* ---------- connection definitions (just slot counts for SVG elements) ---------- */
   const mainLinkCount = 6;
   const scaleLinkCount = 6; // 3 vector + 3 worker
-  const mainLinkGroups = ['gateway', 'retrieval', 'retrieval', 'runtime', 'runtime', 'runtime'] as const;
+  const mainLinkGroups = [
+    "gateway",
+    "retrieval",
+    "retrieval",
+    "runtime",
+    "runtime",
+    "runtime",
+  ] as const;
 
   return (
-    <section ref={sectionRef} id="architecture" className="cl-architecture-section mx-auto w-full max-w-7xl px-6 pb-24 pt-28 lg:px-12">
+    <section
+      ref={sectionRef}
+      id="architecture"
+      className="cl-architecture-section mx-auto w-full max-w-7xl px-6 pb-24 pt-28 lg:px-12"
+    >
       <div ref={stageRef} className="cl-architecture-stage mt-8 lg:mt-0">
         <div className="cl-architecture-copy-column">
           <div
@@ -413,16 +500,25 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
             className="reveal-item cl-architecture-copy-shell"
             style={getRevealStyle(70)}
           >
-            <p className="text-xs uppercase tracking-[0.16em] text-zinc-400">{t.architectureEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-semibold text-zinc-100">{t.architectureTitle}</h2>
-            <p className="mt-4 text-base leading-relaxed text-zinc-300">{t.architectureBody}</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-zinc-400">
+              {t.architectureEyebrow}
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold text-zinc-100">
+              {t.architectureTitle}
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-zinc-300">
+              {t.architectureBody}
+            </p>
 
             <div className="cl-architecture-story-list">
               {storyItems.map((item, index) => (
                 <article
                   key={item.title}
                   data-arch-story-card
-                  className={cn('cl-architecture-story-card', storyStep === index && 'is-active')}
+                  className={cn(
+                    "cl-architecture-story-card",
+                    storyStep === index && "is-active",
+                  )}
                 >
                   <p className="cl-architecture-story-label">{item.label}</p>
                   <h3 className="cl-architecture-story-title">{item.title}</h3>
@@ -454,8 +550,15 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
                 </g>
                 <g className="cl-arch-scale-links">
                   {Array.from({ length: scaleLinkCount }, (_, i) => {
-                    const target = i < 3 ? 'vector' : 'worker';
-                    return <path key={i} className="cl-arch-scale-link" data-arch-scale-target={target} d="M0 0" />;
+                    const target = i < 3 ? "vector" : "worker";
+                    return (
+                      <path
+                        key={i}
+                        className="cl-arch-scale-link"
+                        data-arch-scale-target={target}
+                        d="M0 0"
+                      />
+                    );
                   })}
                 </g>
                 <g className="cl-arch-streams">
@@ -470,15 +573,22 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
                 </g>
                 <g className="cl-arch-scale-streams">
                   {Array.from({ length: scaleLinkCount }, (_, i) => {
-                    const target = i < 3 ? 'vector' : 'worker';
-                    return <path key={i} className="cl-arch-scale-stream" data-arch-scale-target={target} d="M0 0" />;
+                    const target = i < 3 ? "vector" : "worker";
+                    return (
+                      <path
+                        key={i}
+                        className="cl-arch-scale-stream"
+                        data-arch-scale-target={target}
+                        d="M0 0"
+                      />
+                    );
                   })}
                 </g>
               </svg>
 
-              {t.architectureNodes.map(node => {
+              {t.architectureNodes.map((node) => {
                 const clusterTarget =
-                  node.key === 'vector' || node.key === 'worker'
+                  node.key === "vector" || node.key === "worker"
                     ? (node.key as ArchitectureScaleTarget)
                     : undefined;
 
@@ -488,7 +598,7 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
                     data-arch-node
                     data-arch-key={node.key}
                     data-arch-cluster-target={clusterTarget}
-                    className={cn('cl-arch-node', `cl-arch-node-${node.key}`)}
+                    className={cn("cl-arch-node", `cl-arch-node-${node.key}`)}
                   >
                     <p className="cl-node-title">{node.title}</p>
                     <p className="cl-node-text">{node.subtitle}</p>
@@ -503,48 +613,74 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
               <div
                 className="cl-arch-scale-lane cl-arch-scale-lane-vector"
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   zIndex: 4,
-                  display: 'grid',
-                  gap: isCompactViewport ? '0.42rem' : '0.46rem',
-                  gridTemplateColumns: isCompactViewport ? '1fr' : 'repeat(3, minmax(0, 1fr))',
-                  width: isCompactViewport ? 'min(43%, 210px)' : 'min(36%, 360px)',
-                  left: isCompactViewport ? '4%' : '2%',
-                  bottom: isCompactViewport ? '2.2%' : '1.6%',
+                  display: "grid",
+                  gap: isCompactViewport ? "0.42rem" : "0.46rem",
+                  gridTemplateColumns: isCompactViewport
+                    ? "1fr"
+                    : "repeat(3, minmax(0, 1fr))",
+                  width: isCompactViewport
+                    ? "min(43%, 210px)"
+                    : "min(36%, 360px)",
+                  left: isCompactViewport ? "4%" : "2%",
+                  bottom: isCompactViewport ? "2.2%" : "1.6%",
                 }}
               >
                 {t.architectureScaleNodes
-                  .filter(node => node.target === 'vector')
-                  .map(node => (
+                  .filter((node) => node.target === "vector")
+                  .map((node) => (
                     <div
                       key={node.id}
                       data-arch-scale-node
                       data-arch-scale-target={node.target}
-                      className={cn('cl-arch-scale-node', node.variant === 'add' ? 'cl-arch-scale-node-add' : null)}
+                      className={cn(
+                        "cl-arch-scale-node",
+                        node.variant === "add"
+                          ? "cl-arch-scale-node-add"
+                          : null,
+                      )}
                       style={{
-                        position: 'relative',
-                        width: '100%',
-                        borderRadius: '0.74rem',
-                        border: `1px ${node.variant === 'add' ? 'dashed' : 'solid'} ${
-                          node.variant === 'add' ? 'rgba(166, 214, 255, 0.34)' : 'rgba(255, 255, 255, 0.11)'
+                        position: "relative",
+                        width: "100%",
+                        borderRadius: "0.74rem",
+                        border: `1px ${node.variant === "add" ? "dashed" : "solid"} ${
+                          node.variant === "add"
+                            ? "rgba(166, 214, 255, 0.34)"
+                            : "rgba(255, 255, 255, 0.11)"
                         }`,
-                        background: node.variant === 'add' ? 'rgba(13, 20, 34, 0.82)' : 'rgba(10, 16, 27, 0.74)',
-                        padding: isCompactViewport ? '0.42rem 0.48rem' : '0.44rem 0.5rem',
+                        background:
+                          node.variant === "add"
+                            ? "rgba(13, 20, 34, 0.82)"
+                            : "rgba(10, 16, 27, 0.74)",
+                        padding: isCompactViewport
+                          ? "0.42rem 0.48rem"
+                          : "0.44rem 0.5rem",
                       }}
                     >
-                      {node.variant === 'add' ? (
+                      {node.variant === "add" ? (
                         <span
                           className="cl-arch-scale-plus"
                           aria-hidden="true"
-                          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
                         >
                           +
                         </span>
                       ) : null}
-                      <p className="cl-arch-scale-title" style={{ fontSize: '0.63rem', lineHeight: 1.2 }}>
+                      <p
+                        className="cl-arch-scale-title"
+                        style={{ fontSize: "0.63rem", lineHeight: 1.2 }}
+                      >
                         {node.title}
                       </p>
-                      <p className="cl-arch-scale-detail" style={{ fontSize: '0.62rem', lineHeight: 1.35 }}>
+                      <p
+                        className="cl-arch-scale-detail"
+                        style={{ fontSize: "0.62rem", lineHeight: 1.35 }}
+                      >
                         {node.detail}
                       </p>
                     </div>
@@ -554,57 +690,95 @@ export function ArchitectureSection({ locale, t, reducedMotion }: ArchitectureSe
               <div
                 className="cl-arch-scale-lane cl-arch-scale-lane-worker"
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   zIndex: 4,
-                  display: 'grid',
-                  gap: isCompactViewport ? '0.42rem' : '0.46rem',
-                  gridTemplateColumns: isCompactViewport ? '1fr' : 'repeat(3, minmax(0, 1fr))',
-                  width: isCompactViewport ? 'min(43%, 210px)' : 'min(36%, 360px)',
-                  right: isCompactViewport ? '4%' : '2%',
-                  bottom: isCompactViewport ? '2.2%' : '1.6%',
+                  display: "grid",
+                  gap: isCompactViewport ? "0.42rem" : "0.46rem",
+                  gridTemplateColumns: isCompactViewport
+                    ? "1fr"
+                    : "repeat(3, minmax(0, 1fr))",
+                  width: isCompactViewport
+                    ? "min(43%, 210px)"
+                    : "min(36%, 360px)",
+                  right: isCompactViewport ? "4%" : "2%",
+                  bottom: isCompactViewport ? "2.2%" : "1.6%",
                 }}
               >
                 {t.architectureScaleNodes
-                  .filter(node => node.target === 'worker')
-                  .map(node => (
+                  .filter((node) => node.target === "worker")
+                  .map((node) => (
                     <div
                       key={node.id}
                       data-arch-scale-node
                       data-arch-scale-target={node.target}
-                      className={cn('cl-arch-scale-node', node.variant === 'add' ? 'cl-arch-scale-node-add' : null)}
+                      className={cn(
+                        "cl-arch-scale-node",
+                        node.variant === "add"
+                          ? "cl-arch-scale-node-add"
+                          : null,
+                      )}
                       style={{
-                        position: 'relative',
-                        width: '100%',
-                        borderRadius: '0.74rem',
-                        border: `1px ${node.variant === 'add' ? 'dashed' : 'solid'} ${
-                          node.variant === 'add' ? 'rgba(166, 214, 255, 0.34)' : 'rgba(255, 255, 255, 0.11)'
+                        position: "relative",
+                        width: "100%",
+                        borderRadius: "0.74rem",
+                        border: `1px ${node.variant === "add" ? "dashed" : "solid"} ${
+                          node.variant === "add"
+                            ? "rgba(166, 214, 255, 0.34)"
+                            : "rgba(255, 255, 255, 0.11)"
                         }`,
-                        background: node.variant === 'add' ? 'rgba(13, 20, 34, 0.82)' : 'rgba(10, 16, 27, 0.74)',
-                        padding: isCompactViewport ? '0.42rem 0.48rem' : '0.44rem 0.5rem',
+                        background:
+                          node.variant === "add"
+                            ? "rgba(13, 20, 34, 0.82)"
+                            : "rgba(10, 16, 27, 0.74)",
+                        padding: isCompactViewport
+                          ? "0.42rem 0.48rem"
+                          : "0.44rem 0.5rem",
                       }}
                     >
-                      {node.variant === 'add' ? (
+                      {node.variant === "add" ? (
                         <span
                           className="cl-arch-scale-plus"
                           aria-hidden="true"
-                          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
                         >
                           +
                         </span>
                       ) : null}
-                      <p className="cl-arch-scale-title" style={{ fontSize: '0.63rem', lineHeight: 1.2 }}>
+                      <p
+                        className="cl-arch-scale-title"
+                        style={{ fontSize: "0.63rem", lineHeight: 1.2 }}
+                      >
                         {node.title}
                       </p>
-                      <p className="cl-arch-scale-detail" style={{ fontSize: '0.62rem', lineHeight: 1.35 }}>
+                      <p
+                        className="cl-arch-scale-detail"
+                        style={{ fontSize: "0.62rem", lineHeight: 1.35 }}
+                      >
                         {node.detail}
                       </p>
                     </div>
                   ))}
               </div>
 
-              <span data-arch-pulse data-arch-pulse-target="backend" className="cl-arch-pulse" />
-              <span data-arch-pulse data-arch-pulse-target="vector" className="cl-arch-pulse" />
-              <span data-arch-pulse data-arch-pulse-target="worker" className="cl-arch-pulse" />
+              <span
+                data-arch-pulse
+                data-arch-pulse-target="backend"
+                className="cl-arch-pulse"
+              />
+              <span
+                data-arch-pulse
+                data-arch-pulse-target="vector"
+                className="cl-arch-pulse"
+              />
+              <span
+                data-arch-pulse
+                data-arch-pulse-target="worker"
+                className="cl-arch-pulse"
+              />
             </div>
             <div className="cl-architecture-beam" aria-hidden="true" />
           </div>

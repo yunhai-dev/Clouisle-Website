@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { i18n } from "@/lib/i18n";
@@ -16,16 +15,6 @@ import {
   isZh,
 } from "@/lib/seo";
 import "../globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const { provider } = defineI18nUI(i18n, {
   translations: {
@@ -129,10 +118,18 @@ export default async function RootLayout({
 
   return (
     <html lang={lang} suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
-      >
-        <RootProvider i18n={provider(lang)}>{children}</RootProvider>
+      <body className="antialiased flex flex-col min-h-screen">
+        <RootProvider
+          i18n={provider(lang)}
+          search={{
+            options: {
+              type: 'static',
+              api: '/api/search',
+            },
+          }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );

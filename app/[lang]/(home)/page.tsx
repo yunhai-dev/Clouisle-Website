@@ -18,6 +18,10 @@ interface HomePageProps {
   params: Promise<{ lang: string }>;
 }
 
+export async function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'zh' }];
+}
+
 export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
   const { lang } = await params;
   const altLang = getAlternateLang(lang);

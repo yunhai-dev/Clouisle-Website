@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { SITE_DOMAIN, SITE_URL } from '@/lib/seo';
 
+export const dynamic = 'force-static';
+
 const explicitBotAllowList = [
   'Googlebot',
   'Bingbot',

@@ -3,6 +3,8 @@ import { source } from '@/lib/source';
 import { i18n } from '@/lib/i18n';
 import { SITE_URL } from '@/lib/seo';
 
+export const dynamic = 'force-static';
+
 const baseUrl = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -42,7 +44,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const pages = source.getPages(lang);
     for (const page of pages) {
       const pageAlternates = Object.fromEntries(
-        i18n.languages.map((locale) => [locale, `${baseUrl}/${locale}${page.url}`]),
+        i18n.languages
+          .map((locale) => {
+            const alternatePage = source.getPage(page.slugs, locale);
+            if (!alternatePage) return null;
+
+            return [locale, `${baseUrl}/${locale}${alternatePage.url}`];
+          })
+          .filter((entry): entry is [string, string] => entry !== null),
       );
 
       entries.push({
@@ -52,7 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         alternates: {
           languages: {
             ...pageAlternates,
-            'x-default': `${baseUrl}/${i18n.defaultLanguage}${page.url}`,
+            'x-default': pageAlternates[i18n.defaultLanguage] ?? `${baseUrl}/${lang}${page.url}`,
           },
         },
       });

@@ -4,6 +4,10 @@ interface BetaPageProps {
   params: Promise<{ lang: string }>;
 }
 
+export async function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'zh' }];
+}
+
 export async function generateMetadata({ params }: BetaPageProps): Promise<Metadata> {
   const { lang } = await params;
   const isZh = lang === 'zh';

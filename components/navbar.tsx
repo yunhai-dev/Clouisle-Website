@@ -34,7 +34,9 @@ export function Navbar() {
 
   const lang = pathname.split('/')[1] === 'zh' ? 'zh' : 'en';
   const altLang = lang === 'zh' ? 'en' : 'zh';
-  const altPath = pathname.replace(`/${lang}`, `/${altLang}`);
+  const isDocsPath = pathname.startsWith('/zh/docs') || pathname.startsWith('/en/docs');
+  const altPath = isDocsPath ? `/${altLang}` : pathname.replace(`/${lang}`, `/${altLang}`);
+  const docsHref = '/zh/docs';
   const t = labels[lang];
 
   const navLinks = useMemo(
@@ -43,12 +45,12 @@ export function Navbar() {
       { href: `/${lang}#architecture`, text: t.architecture, docs: false },
       { href: `/${lang}#security`, text: t.security, docs: false },
       { href: `/${lang}#use-cases`, text: t.useCases, docs: false },
-      { href: `/${lang}/docs`, text: t.docs, docs: true },
+      { href: docsHref, text: t.docs, docs: true },
     ],
-    [lang, t.architecture, t.docs, t.product, t.security, t.useCases]
+    [docsHref, lang, t.architecture, t.docs, t.product, t.security, t.useCases]
   );
 
-  const docsActive = pathname.startsWith(`/${lang}/docs`);
+  const docsActive = pathname.startsWith(docsHref);
 
   useEffect(() => {
     let raf = 0;

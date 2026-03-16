@@ -78,10 +78,18 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   if (!page) return {};
 
   const altLang = getAlternateLang(lang);
+  const alternatePage = source.getPage(slug, altLang);
   const canonicalPath = `/${lang}${page.url}`;
-  const alternatePath = `/${altLang}${page.url}`;
   const siteName = getSiteName(lang);
   const keywords = getDocKeywords(lang, page.url, page.data.title);
+  const languages: Record<string, string> = {
+    [lang]: canonicalPath,
+    'x-default': canonicalPath,
+  };
+
+  if (alternatePage) {
+    languages[altLang] = `/${altLang}${alternatePage.url}`;
+  }
 
   return {
     title: page.data.title,
@@ -111,11 +119,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     },
     alternates: {
       canonical: canonicalPath,
-      languages: {
-        [lang]: canonicalPath,
-        [altLang]: alternatePath,
-        'x-default': `/en${page.url}`,
-      },
+      languages,
     },
   };
 }

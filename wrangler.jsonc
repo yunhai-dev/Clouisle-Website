@@ -1,11 +1,10 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "clouisle-website",
-  "main": ".open-next/worker.js",
-  "compatibility_date": "2025-02-04",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2026-03-16",
   "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
   }
 }

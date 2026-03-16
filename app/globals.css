@@ -2216,15 +2216,17 @@ body {
 
 @media (min-width: 1024px) {
   .cl-architecture-stage {
-    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
-    gap: 1.4rem;
-    align-items: start;
-    min-height: 220vh;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.8rem;
+  }
+
+  .cl-architecture-copy-column,
+  .cl-architecture-visual-column {
+    grid-column: 1 / -1;
   }
 
   .cl-architecture-copy-shell {
-    position: sticky;
-    top: 6.8rem;
+    position: relative;
   }
 
   .cl-architecture-shell {

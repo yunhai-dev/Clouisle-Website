@@ -1,0 +1,111 @@
+---
+title: API Overview
+description: Plan Clouisle API integration in the order of capability boundaries, authentication preparation, minimal request debugging, and exception handling.
+icon: Braces
+---
+
+## Feature Overview
+
+The Clouisle API is used to connect platform capabilities to external systems, automated processes, and secondary development scenarios.
+Overall, it is divided into two categories:
+
+- Platform-side APIs: for business capabilities such as Agents, workflows, knowledge bases, and conversations
+- Management-side APIs: for governance capabilities such as users, teams, roles, audit, and site administration
+
+## Use Cases
+
+Suitable for:
+
+- Embedding AI capabilities into business systems
+- Automatically managing platform resources from backend systems
+- Enterprises that want to connect platform capabilities into existing system paths
+
+## Prerequisites
+
+Before you begin, we recommend confirming:
+
+- Whether you need to call platform-side or management-side interfaces
+- A usable API Key has been created
+- A test environment and minimal request example are ready
+
+## Steps
+
+### Step 1: Distinguish business interfaces from management interfaces first
+
+Do not start writing code immediately.
+First clarify whether the invocation target belongs to:
+
+- Business capabilities such as Agents, workflows, knowledge bases, and conversations
+- Governance capabilities such as users, teams, permissions, and audit
+
+This step determines the authorization scope of the API Key and the debugging order.
+
+### Step 2: Prepare authentication information and request basics
+
+Before making formal requests, organize:
+
+- Environment address
+- API Key
+- Request headers
+- A minimal invocation example
+
+If this basic information is not unified, later debugging will repeatedly get stuck at the very beginning.
+
+### Step 3: Start debugging from the minimal request
+
+We recommend first sending the simplest request, such as:
+
+- A read-only query
+- A single trigger invocation
+
+First confirm:
+
+- Authentication passes
+- The address is correct
+- The returned structure can be parsed
+
+### Step 4: Then expand to the real business path
+
+After the basic request succeeds, gradually add:
+
+- User identifiers
+- Context variables
+- Files or attachments
+- Callbacks, retries, and error handling
+
+### Step 5: Define error codes and fallback strategies
+
+Before formal integration, the caller should also clarify:
+
+- How to handle authentication failure
+- How to handle timeouts and rate limiting
+- How to retry or fall back when downstream business fails
+
+## Result Validation
+
+A qualified API integration should at least satisfy:
+
+- The caller knows which type of interface it is integrating with
+- Authentication passes stably
+- The minimal request succeeds
+- Exceptions and error codes can be identified and handled
+
+## FAQ
+
+### Why does API debugging always feel messy?
+
+Usually because platform-side and management-side interfaces were not distinguished first, causing permissions, addresses, and expected results to get mixed together.
+
+### Why must the minimal request be done separately?
+
+Because it can isolate network, authentication, and basic structure issues first, avoiding bringing complex business logic in from the beginning.
+
+### Why should error handling be designed early in integration?
+
+If you wait until formal traffic comes in before adding it, the cost is usually higher and it is more likely to affect business systems.
+
+## Notes
+
+- Do the minimal request first, then complex debugging
+- Govern API Keys separately by system and environment
+- Design exception handling paths before any formal integration

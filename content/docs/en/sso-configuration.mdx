@@ -1,0 +1,112 @@
+---
+title: SSO Configuration
+description: Connect enterprise single sign-on in the order of login strategy, account mapping, test validation, and gray release switching.
+icon: LogIn
+---
+
+## Feature Overview
+
+SSO configuration is used to connect an enterprise's existing identity system to Clouisle.
+It not only determines whether users can log in through a unified entry, but also affects account creation, approval, permission assignment, and rollback strategy.
+
+## Use Cases
+
+SSO is suitable for:
+
+- Unified identity login inside enterprises
+- Synchronizing access permissions when employees join or leave
+- Avoiding long-term maintenance of many local accounts
+
+## Prerequisites
+
+Before you begin, we recommend confirming:
+
+- The enterprise identity system is ready
+- User matching rules have been determined, such as email mapping
+- At least one available local administrator account is retained
+- Test accounts and abnormal sample accounts are ready
+
+## Steps
+
+### Step 1: Enter the SSO page in site settings
+
+After entering the Admin Console, administrators open `Site Settings`, then enter the `SSO` related page.
+This is the centralized entry for all single sign-on strategies.
+
+![SSO settings page](/images/docs/sso-settings.png)
+![SSO provider list](/images/docs/sso-provider-list.png)
+
+Before making real changes, first read through the existing configuration on the page and confirm whether SSO has already been enabled on the current platform.
+
+### Step 2: Decide the overall login strategy first
+
+Prioritize clarifying these questions:
+
+- Whether to enable SSO
+- Whether to retain password login
+- Whether to allow automatic user creation
+- Whether approval is required
+
+This step determines the overall route after the platform switches to SSO. We do not recommend deciding temporarily while integrating.
+
+### Step 3: Configure account mapping rules
+
+The most important part of SSO is not whether redirect succeeds, but how the account after login maps into the platform.
+Focus on confirming:
+
+- Which field is used to match existing accounts
+- Whether new users are created automatically after first login
+- Whether approval is required after automatic account creation
+
+If mapping rules are not thought through, duplicate accounts, incorrectly bound accounts, or permission mismatches are most likely to appear later.
+
+![Add SSO provider dialog](/images/docs/sso-provider-dialog.png)
+
+### Step 4: Validate 3 types of scenarios with test accounts first
+
+Do not switch all users from the start.
+We recommend testing at least the following 3 types of accounts:
+
+- Existing platform accounts
+- New accounts logging in for the first time
+- Abnormal accounts that should be rejected or require approval
+
+After completing testing, you should be able to confirm that SSO does not only "redirect successfully", but truly writes accounts and authorizes them as expected.
+
+### Step 5: Retain a fallback entry, then switch through gray release
+
+Before switching all users, we recommend enabling it in a small scope first.
+At the same time, retain a local administrator account to avoid losing Admin Console access directly when SSO is misconfigured.
+
+This is a risk point that many platforms most easily overlook.
+
+## Result Validation
+
+After SSO configuration is complete, it should at least satisfy:
+
+- Enterprise accounts can successfully log in to the platform
+- Existing accounts can be matched correctly without duplicate creation
+- Automatic creation and approval logic for new accounts meets expectations
+- An administrator fallback entry remains available when configuration is abnormal
+
+## FAQ
+
+### Why did SSO login succeed, but duplicate accounts appeared in the platform?
+
+Usually because account matching fields are configured inconsistently, such as email rules not being aligned.
+Check mapping fields first, then decide whether to clean up duplicate accounts.
+
+### Why is it not recommended to turn off password login from the beginning?
+
+Because once SSO is misconfigured, administrators may directly lose access to the Admin Console.
+The correct approach is to validate through gray release first, then gradually tighten local login.
+
+### Why should automatic user creation be enabled cautiously?
+
+Automatic creation improves integration speed, but without approval or default role governance, it can easily let users who should not enter the platform come in directly.
+
+## Notes
+
+- Validate SSO projects in a small scope first, then roll them out to all users
+- Login strategy, account mapping, and permission assignment should be considered together. Do not only look at single sign-on itself
+- Always retain an administrator entry that can be used for fallback

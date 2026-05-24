@@ -1,0 +1,75 @@
+---
+title: File Management
+description: Provide a stable data entry point for knowledge base, conversations, and workflow through file upload, parsing, extraction, and management.
+icon: Files
+---
+
+## Feature Overview
+
+File management is responsible for bringing external files into the platform and converting them into content that can be retrieved, parsed, or further processed.
+It is usually the upstream entry point for knowledge base and multimodal interactions.
+
+## Use Cases
+
+Suitable for:
+
+- Uploading documents to build a knowledge base
+- Processing attachments in conversations or workflow
+- Extracting text and metadata for later analysis
+
+## Prerequisites
+
+Before you start, we recommend preparing:
+
+- A clear range of file types
+- Sample files to process
+- Expectations for parsing results
+
+## Steps
+
+### Step 1: Confirm supported file types
+
+First clarify which formats need to enter the platform, such as PDF, DOCX, TXT, HTML, CSV, XLSX, and JSON.
+Parsing quality and use cases differ across formats.
+
+### Step 2: Upload sample files
+
+Upload only a small number of representative files the first time, and focus on observing:
+
+- Whether upload succeeds
+- Whether status can update
+- Whether file size and structure affect processing
+
+### Step 3: Check parsing and extraction results
+
+Focus on confirming:
+
+- Whether the text is complete
+- Whether the structure is damaged
+- Whether metadata is accurate
+
+### Step 4: Connect the results to knowledge base or workflow
+
+After confirming basic parsing, decide whether to use it for:
+
+- Knowledge base import
+- Conversation attachment understanding
+- Later workflow processing
+
+## Result Validation
+
+When file management is usable, it should at least meet these requirements:
+
+- Sample files can be successfully uploaded and processed
+- Parsing results are readable and reusable
+- Later modules can consume these results
+
+## Value Description
+
+The value of file management is to turn scattered unstructured input into a unified entry point that the platform can process.
+
+## Notes
+
+- Large files and files with complex layouts should be validated separately
+- When parsing quality is poor, first distinguish whether the issue comes from the file itself or the parsing path
+- We recommend validating different formats in batches, do not mix too many variables in one test

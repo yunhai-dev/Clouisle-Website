@@ -1,0 +1,101 @@
+---
+title: Best Practices
+description: Organize best practices for Agent, knowledge base, workflow, and platform governance with the goals of less rework, lower risk, and easier handoff.
+icon: Lightbulb
+---
+
+## Feature Overview
+
+Best practices are not an additional feature, but a set of implementation methods that help you avoid detours.
+Their role is to turn “usable” into “stable, maintainable, and scalable” as quickly as possible.
+
+## Use Cases
+
+Suitable for:
+
+- Building core capabilities for the first time
+- Preparing to move from pilot to production launch
+- Reducing the risks of rework, hallucination, over-permission, and cost runaway
+
+## Recommended pre-launch check order
+
+### Step 1: Make Agent small first, not complete
+
+The easiest mistake at the beginning is trying to make one Agent solve too many things at the same time.
+A more stable approach is:
+
+- Solve only one core business goal at a time
+- Stabilize basic conversations first
+- Then gradually add knowledge, tool, or memory capabilities
+
+### Step 2: Make the knowledge base accurate first, not large
+
+The key order for building a knowledge base should be:
+
+1. Ensure material quality first
+2. Then import samples for testing
+3. Then gradually expand the material scale
+
+If you only pursue document quantity at the beginning, later tuning costs will be very high.
+
+### Step 3: Run the workflow trunk first, then add complex branches
+
+The most stable way to advance workflow is usually:
+
+- Write the main process clearly first
+- Run the shortest successful path first
+- Then add conditional branches, loops, and exception handling
+
+This is easier to succeed with than filling out the entire large process from the start.
+
+### Step 4: Establish governance boundaries first, then expand usage
+
+After the platform starts being used by multiple people, you should prioritize establishing:
+
+- Role and permission boundaries
+- Team ownership
+- API Key standards
+- Model authorization strategies
+
+If these boundaries are established too late, the platform will become increasingly difficult to govern later.
+
+### Step 5: Preserve test cases and regression habits
+
+Whether it is Agent, knowledge base, or workflow, we recommend retaining:
+
+- Fixed test questions
+- Fixed input samples
+- Regression checklists after changes
+
+This makes it possible to know whether results have improved or degraded during later iterations.
+
+## Result Validation
+
+When best practices are truly implemented, they usually show up as:
+
+- Fewer instances of rework
+- Faster fault localization
+- Easier handoff to new members
+- More platform capabilities without runaway complexity
+
+## FAQ
+
+### Why does the team become more chaotic even as it works harder on features?
+
+Usually because there is no unified method. Everyone is adding features in parallel, but there is no stable advancement order or regression habit.
+
+### Why is “small first, big later” so important?
+
+Because platform capabilities are highly coupled.
+If you build too large at the beginning, issues will appear across multiple layers at the same time, including model, knowledge, tool, and permissions.
+
+### Why should best practices be written as fixed rules?
+
+If they remain only personal experience, they will stop working once the team grows.
+Only by forming fixed rules can platform capabilities continue to be handed off and reused.
+
+## Notes
+
+- The focus of best practices is stability, not feature stacking
+- Once a team forms an effective method, solidify it into internal standards as soon as possible
+- After each retrospective, we recommend adding new lessons back into this method set

@@ -1,0 +1,103 @@
+---
+title: Admin API
+description: Integrate backend interfaces in order, starting with read-only interfaces, gray validating change interfaces, and connecting governance systems.
+icon: ShieldEllipsis
+---
+
+## Feature Overview
+
+The admin API is used to automate management of the platform itself.
+It mainly covers backend governance capabilities such as users, teams, roles, permissions, audit, and site configuration.
+
+## Use Cases
+
+Suitable for:
+
+- Batch synchronizing users and teams
+- Automating role and site rule management
+- Pulling audit logs into external security systems
+
+## Prerequisites
+
+Before you start, we recommend confirming:
+
+- The caller truly needs backend governance capabilities
+- A high-permission but scope-controlled API Key has been prepared
+- Approval, rollback, or traceability requirements have been designed
+
+## Steps
+
+### Step 1: Start with read-only interfaces
+
+When integrating the admin API for the first time, we recommend calling only read-only interfaces first, such as:
+
+- Query users
+- Query teams
+- Query audit logs
+
+Clarify the data structure and permission validation first, then consider write operations.
+
+### Step 2: Clarify responsibility boundaries for calls
+
+Admin-side interfaces have significant impact, so first clarify:
+
+- Which system calls them
+- Who is responsible for this automation process
+- Who rolls back and provides fallback handling after an error
+
+### Step 3: Gray validate write operations in a small scope
+
+After read-only interfaces are stable, gradually validate write operations, such as:
+
+- Adding or updating users
+- Adjusting team members
+- Modifying roles or site settings
+
+These operations should first be validated on low-risk objects or in a test environment.
+
+### Step 4: Retain logs and audit evidence
+
+Each automated change should ensure:
+
+- The platform has corresponding records
+- The calling system also has operation logs
+- Key changes can be traced to a responsible person or responsible system
+
+### Step 5: Connect external governance systems last
+
+After the interfaces are stable, connect:
+
+- Identity governance systems
+- Audit platforms
+- Security alerting systems
+
+Do not connect everything in one pass before the interfaces are stable.
+
+## Result Validation
+
+After admin API integration is complete, it should at least meet these requirements:
+
+- Read-only interface results are trustworthy
+- Write operations are controllable and can be rolled back
+- Operation records can be audit-tracked
+
+## FAQ
+
+### Why is the admin API higher risk?
+
+Because it directly affects the platform organizational structure, permission boundaries, and site rules, not just a single business call.
+
+### Why is it recommended to read first, then write?
+
+Because read-only interfaces are better suited for confirming permissions and structures first.
+If you start with write operations, the cost of issues will be significantly higher.
+
+### Why must automated changes also leave traces?
+
+Because once backend governance has issues, the consequences are usually more serious than business interfaces, and without traces it is almost impossible to troubleshoot.
+
+## Notes
+
+- The admin API uses strict governance by default
+- Write operations must be gray validated, do not directly automate at full scale
+- Logs, rollback, and responsibility boundaries must be clarified before formal integration

@@ -1,0 +1,81 @@
+---
+title: Team Model Authorization
+description: Allocate model capabilities by team to balance capability access, cost control, and organizational governance.
+icon: Cpu
+---
+
+## Feature Overview
+
+Team model authorization determines "which teams can use which models, and under what quotas and rules".
+It is both a capability distribution tool and a cost governance tool.
+
+## Use Cases
+
+This capability is suitable when:
+
+- Different teams need different tiers of models
+- The platform wants to control the access scope of high-cost models
+- Model consumption needs to be tracked by team
+
+## Prerequisites
+
+Before configuration, we recommend preparing:
+
+- Available models have already been connected to the platform
+- The team structure has already been established
+- There is already an initial plan for model capabilities and budgets for different teams
+
+## Steps
+
+### Step 1: Divide models into tiers first
+
+We recommend first dividing models into several categories, such as:
+
+- General-purpose models
+- High-performance models
+- Specialized models, such as vision, Embedding, and video
+
+This makes later authorization easier to turn into rules instead of assigning models randomly team by team.
+
+### Step 2: Determine each team's available scope
+
+Decide based on each team's business importance, budget, and use cases:
+
+- Which models can be used directly
+- Which models require approval or restrictions
+- Which models are not open to the team
+
+### Step 3: Set quota and frequency rules
+
+If the platform supports quota, request count, or Token limits, we recommend configuring them at the same time.
+Authorizing models without quotas usually cannot form a true governance loop.
+
+### Step 4: Verify the team-side result in practice
+
+Use a team member account to open the application creation or model selection interface and confirm:
+
+- Only authorized models are visible
+- Quota policies take effect during actual calls
+- There is recognizable feedback when usage abnormally exceeds the quota
+
+## Result Validation
+
+We recommend confirming at least:
+
+- The model lists visible to different teams match expectations
+- High-cost models are not open to all teams by default
+- Usage statistics can be traced back by team
+
+## Value
+
+The value of team model authorization lies in:
+
+- More precise capability access
+- More executable cost control
+- Team-specific needs can be handled through the platform
+
+## Notes
+
+- Do not manage model authorization and role permissions together
+- High-cost models should be restricted by default instead of open by default
+- After each new model is added, the team authorization strategy should be reviewed again

@@ -13,12 +13,14 @@ export default async function Layout({
   const { lang } = await params;
 
   return (
-    <DocsLayout
-      tree={source.getPageTree(lang)}
-      {...baseOptions(lang)}
-      themeSwitch={{ enabled: true, mode: 'light-dark-system' }}
-    >
-      {children}
-    </DocsLayout>
+    <div className="cl-docs-shell">
+      <DocsLayout
+        tree={source.getPageTree(lang)}
+        {...baseOptions(lang)}
+        themeSwitch={{ enabled: true, mode: 'light-dark-system' }}
+      >
+        {children}
+      </DocsLayout>
+    </div>
   );
 }

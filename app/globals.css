@@ -48,6 +48,17 @@ body {
     color: var(--cl-text);
 }
 
+body:has(.cl-docs-shell) {
+    background: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+}
+
+.cl-docs-shell {
+    min-height: 100vh;
+    background: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+}
+
 .cl-home-shell {
     position: relative;
     isolation: isolate;

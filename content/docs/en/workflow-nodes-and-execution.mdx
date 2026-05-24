@@ -1,0 +1,116 @@
+---
+title: Workflow Nodes and Execution
+description: Understand why a workflow succeeds or fails in the order of node responsibilities, input-output checks, and execution record replay.
+icon: GitBranch
+---
+
+## Feature Overview
+
+Workflow nodes are the smallest execution units in a process.
+Nodes define "what to do", while execution records define "what actually happened".
+To make a workflow stable, you must understand both layers.
+
+## Use Cases
+
+Suitable for:
+
+- Learning node-based orchestration for the first time
+- Locating why a specific node failed
+- Confirming how variables are passed between nodes
+
+## Prerequisites
+
+Before you start, we recommend preparing:
+
+- A test workflow with a structure that is as simple as possible
+- A clear set of input samples
+- At least one successful or failed execution record
+
+## Steps
+
+### Step 1: Classify nodes by responsibility first, not by name
+
+When looking at a workflow for the first time, do not only look at node names.
+You should first distinguish which responsibility each node belongs to, such as:
+
+- Start / Trigger: receives input
+- LLM / Agent: handles reasoning
+- Tool: calls external capabilities
+- Knowledge: handles retrieval
+- Condition: handles branch judgment
+- Iteration: handles loop processing
+- End / Answer: outputs results
+
+This makes it easier to determine which layer a problem belongs to during later debugging.
+
+### Step 2: Then inspect each node's input and output
+
+The place where nodes most often go wrong is not whether they have many configuration items, but whether data flows in correctly.
+Focus on checking:
+
+- Which upstream node the input comes from
+- Who consumes the output
+- Whether the data structure is damaged in the middle
+
+If inputs and outputs are unclear, even correctly configured downstream nodes cannot recover the process.
+
+### Step 3: Use execution records to replay the real running path
+
+After the process runs, first use execution records to confirm:
+
+- In what order nodes were executed
+- Exactly which node failed
+- What real input each node received
+- Whether the output was used correctly downstream
+
+The goal of this step is not to refactor the process, but to narrow the fault scope first.
+
+### Step 4: Fix single-point issues first, then adjust the whole process
+
+If a node result is wrong, first check:
+
+- Whether the upstream input is correct
+- Whether the current node configuration is reasonable
+- Whether downstream nodes make wrong assumptions about the output
+
+Do not redraw the entire process as soon as you find an error, or a small issue will turn into major rework.
+
+### Step 5: Organize node naming and variable rules
+
+As workflows grow longer, we recommend going back and unifying:
+
+- Node naming
+- Variable naming
+- Input and output formats
+
+If you do not do this, maintenance cost will keep increasing even if the process can still run.
+
+## Result Validation
+
+A clearly structured workflow execution chain should meet at least these criteria:
+
+- Node responsibilities are clear
+- Inputs and outputs are traceable
+- A failing node can be located quickly
+- Variable-passing relationships can be understood without guesswork
+
+## FAQ
+
+### Why can the process run, but results are often unstable?
+
+Usually, the whole process is not broken. Instead, the input source of a certain node is unstable, or a step makes incorrect assumptions about downstream output.
+
+### Why should upstream nodes be checked first during debugging?
+
+Because most abnormalities in the current node often come from incorrect data provided upstream, not from configuration errors in the current node itself.
+
+### Why does node naming also affect maintenance?
+
+When the process grows longer, unclear naming directly increases troubleshooting cost.
+You will spend a lot of time on "what exactly does this node do" instead of locating the real issue.
+
+## Notes
+
+- Understand node responsibilities first, then look at node names
+- Prioritize checking the input-output chain, not just individual node configuration
+- Complex processes require continuous organization of variables and naming rules

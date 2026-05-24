@@ -1,0 +1,110 @@
+---
+title: Login, Passwords, and SSO
+description: Design a stable identity authentication system in the order of login strategy, password governance, two-factor authentication, and SSO integration.
+icon: KeyRound
+---
+
+## Feature Overview
+
+Login and identity authentication answer the question "who is entering the platform".
+It includes local account login, password governance, two-factor authentication, and single sign-on. It is the identity entrance part of access control.
+
+## Applicable Scenarios
+
+This page is suitable when:
+
+- The platform is preparing to open to more internal or external users
+- You need to improve account security levels
+- The enterprise is preparing to log in uniformly through an identity platform
+- You need to decide whether to allow password recovery, two-factor authentication, and local login
+
+## Prerequisites
+
+Before you start, we recommend confirming:
+
+- Whether the current platform allows registration
+- Whether the email channel is already available
+- Whether an enterprise identity system already exists
+- Whether at least one local administrator account is retained
+
+## Operation Steps
+
+### Step 1: First Determine the Platform's Overall Login Strategy
+
+First decide which type the platform belongs to:
+
+- Public registration
+- Invitation or approval-based access
+- Enterprise internal unified identity
+
+This step determines the implementation route for password policies, recovery processes, and SSO later.
+
+### Step 2: Then Sort Out Password Governance Rules
+
+When local login is still retained, you need to clarify:
+
+- Whether users can change passwords by themselves
+- Whether forgot-password recovery is allowed
+- Whether complexity, expiration, and failed-attempt lockout policies are enabled
+
+Do not allow local login while ignoring password governance.
+
+### Step 3: Evaluate Whether to Enable TOTP
+
+If the platform includes:
+
+- Admin Console
+- Sensitive materials
+- High-cost models or critical business capabilities
+
+We recommend further enabling TOTP as a second verification step.
+
+### Step 4: Finally Connect SSO and Retain a Fallback Plan
+
+When the organization already has a unified identity platform, connect SSO.
+The focus of this step is not login redirection, but confirming:
+
+- Whether accounts can be matched correctly
+- How new users are created
+- Whether approval is required
+- Whether local login is retained as a fallback
+
+### Step 5: Test 3 Paths Separately
+
+After configuration is complete, we recommend validating separately:
+
+- Local login path
+- Two-factor path
+- SSO path
+
+Only when all three paths run successfully is the identity authentication system truly complete.
+
+## Result Validation
+
+A stable identity authentication system should at least satisfy:
+
+- Local login, password change, and recovery paths are available
+- After TOTP is enabled, binding and verification work normally
+- First SSO login, existing account matching, and exception fallback all work normally
+
+## FAQ
+
+### Why Does SSO Appear Connected but Still Cannot Directly Replace Local Login
+
+Because connection is only the first step.
+The real difficulties are account mapping, approval, and exception fallback.
+
+### Why Is It Not Recommended to Open Password Recovery Before Verifying the Email Channel
+
+Because once the recovery path is unavailable, users will be locked out of the system directly.
+
+### Why Should TOTP Not Be Forced for Everyone at the Beginning
+
+Because it involves binding, recovery, and fallback processes.
+Without user guidance and support processes prepared, forcing it will create many usage obstacles.
+
+## Notes
+
+- Decide the overall login route first, then add detailed policies
+- Before SSO is fully verified, do not close all local entrances
+- Identity authentication and role authorization should be designed together, not advanced independently

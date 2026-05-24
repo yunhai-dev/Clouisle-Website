@@ -1,0 +1,114 @@
+---
+title: API Key Management
+description: Establish programmatic access capabilities in the order of confirming call scope, creating keys, tightening permissions, and API validation.
+icon: Key
+---
+
+## Feature Overview
+
+API Keys provide an identity for programs, scripts, and external systems to access Clouisle.
+They are not account substitutes for human login, but an independent way to govern program identities.
+
+## Applicable Scenarios
+
+API Keys are commonly used for:
+
+- External systems calling Agents or workflows
+- Automation platforms accessing knowledge bases, files, or conversation APIs
+- Scheduled tasks, bots, or integration platforms calling APIs long-term
+
+## Prerequisites
+
+Before you start, we recommend confirming:
+
+- Who the calling system is
+- Which API scopes need to be accessed
+- Whether expiration time, enable or disable control, and rate limiting are needed
+- Whether a minimum calling sample has been prepared
+
+## Operation Steps
+
+### Step 1: First Clarify the Key's Usage Scope
+
+Before creating it, clearly answer what this Key is used for, such as:
+
+- Only calling a specific Agent
+- Only triggering a specific workflow
+- Needing access to multiple business capability APIs
+
+The clearer this step is, the easier it is to tighten permissions later.
+
+### Step 2: Create the Key and Use a Traceable Naming Method
+
+When creating it, we recommend the name include at least:
+
+- Calling system name
+- Environment, such as test or production
+- Purpose description
+
+For example: `crm-prod-agent-call`.
+This makes it easier to quickly identify later in logs, audit, or rotation.
+
+### Step 3: Limit Permissions and Lifecycle
+
+After creation, focus on confirming:
+
+- Which resources are allowed to be accessed
+- Whether it is enabled by default
+- Whether an expiration time is set
+- Whether rate limiting is configured
+
+In production environments, do not open full permissions at the beginning just for convenience.
+
+### Step 4: Immediately Perform One Minimum API Validation
+
+After the Key is created, immediately run one minimum test with a real request and confirm at least:
+
+- Authentication succeeds
+- The target API can be called
+- Unauthorized APIs are rejected
+
+If this step is not validated, it is easy to mistake permission problems for API problems during later joint debugging.
+
+### Step 5: Add Disable, Rotation, and Reclamation Rules
+
+After the Key starts entering official systems, also define:
+
+- How long before expiration it should be rotated
+- Who reclaims it after the system is decommissioned
+- How to urgently disable it if abnormal leakage occurs
+
+## Result Validation
+
+A properly governed API Key should at least satisfy:
+
+- Target API calls succeed
+- Unauthorized API calls fail
+- It becomes invalid immediately after being disabled
+- Last usage time and purpose ownership can be tracked
+
+## FAQ
+
+### Why Do API Key Calls Keep Failing
+
+Check first:
+
+- Whether the Key is valid
+- Whether the request header is correct
+- Whether the called API exceeds the authorized scope
+- Whether the environment address is wrong
+
+### Why Is It Not Recommended for Multiple People or Systems to Share the Same Key
+
+Because once a problem occurs, it is difficult to trace responsibility and difficult to separately revoke one system's access permission.
+
+### Why Set Expiration Time and a Rotation Mechanism
+
+If a Key remains valid long-term and no one manages it, once it leaks, the risk will continue to exist.
+Rotation and reclamation mechanisms are indispensable parts of program identity governance.
+
+## Notes
+
+- One Key per system, issued separately by environment
+- API Keys should always follow the principle of least privilege
+- Before official joint debugging, first use a minimum request to verify whether authentication and authorization are correct

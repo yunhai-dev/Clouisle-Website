@@ -1,0 +1,79 @@
+---
+title: Background Tasks
+description: Support stable execution of knowledge processing, notification sending, and automated processes through asynchronous tasks and scheduled tasks.
+icon: Clock3
+---
+
+## Feature Overview
+
+Background tasks handle processes that are not suitable to complete synchronously in the foreground.
+They usually support:
+
+- Document parsing
+- Vectorization processing
+- Notification sending
+- Scheduled process execution
+
+## Use Cases
+
+Suitable for:
+
+- Batch or time-consuming processing tasks
+- Automated jobs that need scheduled execution
+- Background processing paths where frontend users should not wait for completion
+
+## Prerequisites
+
+Before you start, we recommend preparing:
+
+- Clear task inputs and outputs
+- Whether asynchronous execution can tolerate delay
+- Failure retry and monitoring methods
+
+## Steps
+
+### Step 1: First determine which tasks should be asynchronous
+
+In general, tasks that take a long time, depend on external systems, or need batch execution are more suitable for background tasks.
+
+### Step 2: Distinguish immediate asynchronous tasks from scheduled tasks
+
+First determine whether the task belongs to:
+
+- Asynchronous execution immediately after an event trigger
+- Running by Cron or on a fixed cycle
+
+### Step 3: Validate task status and results
+
+Focus on confirming:
+
+- Whether the task is created successfully
+- Whether status transitions correctly
+- Whether failures are traceable
+
+### Step 4: Connect monitoring and retry strategies
+
+Background tasks are suitable for long-term running only when monitored.
+We recommend considering these at the same time:
+
+- Failure retries
+- Timeout handling
+- Alert notifications
+
+## Result Validation
+
+When the background task path is usable, it should at least achieve:
+
+- Tasks can be triggered
+- Status changes are visible
+- Both successful and failed results can be traced
+
+## Value Description
+
+The value of background tasks is decoupling time-consuming capabilities from the foreground experience, allowing the platform to both respond to users and complete heavy processing tasks.
+
+## Notes
+
+- Asynchronization does not mean results do not need validation, status tracking is equally critical
+- Scheduled tasks should have at least one manual rehearsal before launch
+- If background task failures are invisible, issues will accumulate over time

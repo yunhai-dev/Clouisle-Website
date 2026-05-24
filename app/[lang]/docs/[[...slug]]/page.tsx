@@ -30,7 +30,7 @@ export default async function Page(props: PageProps) {
 
   const MDX = page.data.body;
   const siteName = getSiteName(lang);
-  const pageUrl = `${SITE_URL}/${lang}${page.url}`;
+  const pageUrl = `${SITE_URL}${page.url}`;
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
@@ -79,17 +79,18 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
   const altLang = getAlternateLang(lang);
   const alternatePage = source.getPage(slug, altLang);
-  const canonicalPath = `/${lang}${page.url}`;
+  const canonicalPath = page.url;
   const siteName = getSiteName(lang);
   const keywords = getDocKeywords(lang, page.url, page.data.title);
   const languages: Record<string, string> = {
     [lang]: canonicalPath,
-    'x-default': canonicalPath,
   };
 
   if (alternatePage) {
-    languages[altLang] = `/${altLang}${alternatePage.url}`;
+    languages[altLang] = alternatePage.url;
   }
+
+  languages['x-default'] = lang === 'en' ? canonicalPath : alternatePage?.url ?? canonicalPath;
 
   return {
     title: page.data.title,

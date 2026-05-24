@@ -1,0 +1,82 @@
+---
+title: User Memories
+description: Let Agents retain continuity and personalization in long-term interactions through entities, relationships, and memory retrieval.
+icon: Network
+---
+
+## Feature Overview
+
+User memories are used to save key information accumulated from users during long-term interactions.
+Their goal is not to record every sentence of a conversation, but to extract facts, preferences, and relationships worth reusing long term.
+
+![Memory Center empty state](/images/docs/memories-empty.png)
+
+## Use Cases
+
+Suitable for:
+
+- Long-term companion assistants
+- Customer management and service applications
+- Scenarios that need to continuously understand user preferences, project background, or historical goals
+
+## Prerequisites
+
+Before enabling this feature, we recommend confirming:
+
+- The application truly needs long-term continuous interaction
+- It is clear what information is worth remembering
+- The team already has basic principles for memory scope and privacy boundaries
+
+## Steps
+
+### Step 1: Define the memory scope first
+
+We recommend prioritizing:
+
+- User preferences
+- Ongoing projects
+- Long-term goals
+- Important identity and relationship information
+
+We do not recommend writing all temporary chat content into memory.
+
+### Step 2: Understand entities and relationships
+
+Memories can usually be split into two categories:
+
+- Entities: people, projects, preferences, skills, goals
+- Relationships: what someone likes, what someone is working on, who something is related to
+
+### Step 3: Enable automatic extraction or a manual review strategy
+
+If the platform supports automatic extraction, focus on considering:
+
+- Extraction granularity
+- Whether manual correction is allowed
+- Whether source tracing is retained
+
+### Step 4: Verify that memories are actually used
+
+After enabling the feature, validate through multi-turn questions:
+
+- Whether later answers correctly reference known preferences
+- Whether memories help reduce repeated questions
+- Whether incorrect memories can be discovered and corrected
+
+## Result Validation
+
+When the memory feature is effective, you can usually see:
+
+- More stable answers across continuous conversations
+- More consistent understanding of user background
+- Memory entries have sources, are traceable, and can be adjusted
+
+## Value
+
+The core value of user memories is to make an Agent shift from "every time feels like the first meeting" to "knowing the user's background and providing continuous service".
+
+## Notes
+
+- Do not record low-value memories just to pursue quantity
+- Incorrect memories are more dangerous than no memories. A correction mechanism must be retained
+- When sensitive information is involved, privacy and governance boundaries should be clarified in advance

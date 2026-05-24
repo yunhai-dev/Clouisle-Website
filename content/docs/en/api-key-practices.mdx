@@ -1,0 +1,98 @@
+---
+title: API Key Usage Practices
+description: Establish stable API Key usage standards from naming, authorization, validation, rotation, to long-term governance.
+icon: Fingerprint
+---
+
+## Feature Overview
+
+This page no longer explains what an API Key is. Instead, it answers "how to use API Keys stably over the long term".
+Key topics include:
+
+- Naming conventions
+- Authorization boundaries
+- Launch validation
+- Rotation and reclamation
+- Long-term audit
+
+## Applicable Scenarios
+
+Suitable for the following scenarios:
+
+- The platform has already started to have multiple integrated systems
+- Different environments need separate key management
+- The team wants to establish unified security standards
+
+## Prerequisites
+
+Before you start, we recommend preparing:
+
+- An environment division plan, such as development, test, and production
+- A list of calling systems
+- A list of people responsible for key custody and rotation
+
+## Operation Steps
+
+### Step 1: Establish Unified Naming Rules
+
+We recommend that names include at least 3 types of information:
+
+- System name
+- Environment
+- Purpose
+
+For example: `crm-prod-agent-call`.
+This keeps later log review, rotation, and exception investigation costs lowest.
+
+### Step 2: Issue Separate Keys for Each Environment
+
+Do not share the same Key across development, test, and production.
+Otherwise, test leaks, accidental production calls, or troubleshooting will become very difficult.
+
+### Step 3: Issue by Least Privilege
+
+Start with the narrowest permissions and expand gradually only when truly needed.
+In particular, avoid granting the following at the beginning:
+
+- Access to all Agents
+- Execution of all workflows
+- Full resource management permissions
+
+### Step 4: Perform Reverse Validation Before Launch
+
+In addition to verifying "whether calls can succeed", also verify:
+
+- Whether calls to unauthorized resources are rejected
+- Whether a Key becomes invalid immediately after being disabled
+- Whether behavior is as expected when call frequency is too high
+
+### Step 5: Establish Rotation and Reclamation Mechanisms
+
+For Keys used long-term, we recommend defining in advance:
+
+- How long before expiration rotation occurs
+- Who reclaims it after the system is decommissioned
+- How to urgently disable it after abnormal leakage
+
+## Result Validation
+
+After usage standards are established, we recommend regularly checking:
+
+- Whether there are unclaimed Keys
+- Whether there are long-unused but still valid Keys
+- Whether any Keys have obviously excessive permissions
+- Whether any test Keys are used in production systems
+
+## Value Description
+
+The value of these practices is not that they are "more complicated", but that:
+
+- Keys are identifiable, replaceable, and disableable
+- Responsibility boundaries for integrated systems are clearer
+- Security governance and troubleshooting costs are lower
+
+## Notes
+
+- Do not make Key names too generic, such as `test`, `api`, or `system`
+- Once key standards are established, they should be applied uniformly to all new systems
+- Rotation drills should be completed before a real failure occurs, not designed after a leak

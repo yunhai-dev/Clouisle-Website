@@ -1,0 +1,100 @@
+---
+title: Platform API
+description: Integrate business interfaces in order, starting with a single capability, minimum-call validation, context expansion, and failure handling.
+icon: Plug
+---
+
+## Feature Overview
+
+The platform API mainly serves business system integration.
+It allows external systems to call Agent, trigger workflow, and manage conversations, files, and knowledge capabilities.
+
+## Use Cases
+
+Suitable for:
+
+- Embedding Agent into CRM, customer service, portals, or internal systems
+- Triggering workflow through interfaces
+- Managing conversations, files, and knowledge calls from business systems
+
+## Prerequisites
+
+Before you start, we recommend confirming:
+
+- The integration target has been determined, such as a specific Agent or workflow
+- The API Key has the required permissions
+- The calling system has prepared a minimal request example
+
+## Steps
+
+### Step 1: Select only one integration target first
+
+During the first integration test, do not connect multiple Agents, workflows, and file interfaces at the same time.
+We recommend selecting only one capability, such as:
+
+- A single Agent call
+- A single workflow trigger
+
+Run one path successfully first, then continue expanding.
+
+### Step 2: Complete minimum request validation
+
+First use the simplest request to confirm:
+
+- Authentication succeeds
+- The interface address is correct
+- The returned structure matches the documentation
+
+Only after this step succeeds is it worth continuing to add later context and business parameters.
+
+### Step 3: Gradually add business parameters
+
+After the basic call passes, gradually add:
+
+- User identifiers
+- Variables
+- Conversation context
+- Files or attachments
+
+We recommend adding only one type of parameter each time, which makes it easier to locate the source of issues.
+
+### Step 4: Add failure handling and retry strategies
+
+When integrating a business system, define in advance:
+
+- Whether to retry on network failure
+- How to handle timeouts
+- How to fall back when model or tool exceptions occur
+
+### Step 5: Return to the application layer for reverse validation
+
+If the interface returns abnormal results, do not focus only on the caller code.
+Return to the Agent or workflow page in the platform and confirm whether the application itself is configured correctly.
+
+## Result Validation
+
+After the platform API integration is complete, it should at least meet these requirements:
+
+- The single target capability can be called stably
+- Expected results can still be returned after adding business parameters
+- Failure, timeout, and rate-limit scenarios have clear handling methods
+
+## FAQ
+
+### Why does the interface return normally, but the business result is still incorrect?
+
+A common cause is that the application itself is configured incorrectly, such as issues with prompts, knowledge base, or workflow nodes.
+
+### Why is it not recommended to connect multiple capabilities the first time?
+
+Because once an issue occurs, it is difficult to determine whether it is caused by authentication, parameters, files, context, or application configuration.
+
+### Why should interface integration testing also review page configuration?
+
+Because the platform API ultimately still calls the actual application capabilities in the platform, not a completely independent backend interface.
+
+## Notes
+
+- Start integration testing from a single capability
+- Add only one type of parameter or context each time
+- When exceptions occur, troubleshoot both the interface layer and application layer together

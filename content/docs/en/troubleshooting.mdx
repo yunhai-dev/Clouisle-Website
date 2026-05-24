@@ -1,0 +1,107 @@
+---
+title: Troubleshooting
+description: Use a unified judgment order and scenario-based checklists to quickly locate login, knowledge, workflow, tool, and notification issues.
+icon: TriangleAlert
+---
+
+## Feature Overview
+
+The goal of the troubleshooting page is not to explain every principle, but to provide an executable path for locating issues when they occur.
+Its focus is to narrow the scope first, then locate the issue step by step, rather than guessing the cause from experience at the beginning.
+
+## General Troubleshooting Order
+
+When encountering an issue, we recommend always checking in this order:
+
+1. First confirm whether it is an account, permission, or entry-point issue
+2. Then confirm whether resource status is normal, such as whether documents have finished processing or workflow has been published
+3. Then check message records, execution logs, notification results, or audit logs
+4. Only lastly suspect defects in model, tool, or the platform itself
+
+The purpose of this order is to rule out the most common and easiest-to-verify issues first.
+
+## Scenario-Based Troubleshooting Steps
+
+### Login failure
+
+We recommend checking in this order:
+
+1. Whether the account exists
+2. Whether the current login method has been disabled by policy
+3. Whether SSO, password, or TOTP is configured incorrectly
+4. Whether an administrator fallback entry is still retained
+
+### Abnormal Agent answers
+
+We recommend checking in this order:
+
+1. Whether prompt boundaries are clear
+2. Whether the knowledge base hits the correct content
+3. Whether the tool is actually called
+4. Whether the model is selected incorrectly or configured abnormally
+
+### Poor knowledge base hits
+
+We recommend checking in this order:
+
+1. Whether documents were processed successfully
+2. Whether chunking is noticeably distorted
+3. Whether retrieval parameters are too loose or too strict
+4. Whether test questions are close to real user questions
+
+### Workflow execution failure
+
+We recommend checking in this order:
+
+1. Whether input variables are complete
+2. Whether node inputs and outputs are correct
+3. Whether external dependencies time out or report errors
+4. Whether a fixed node keeps failing
+
+### Notification not delivered
+
+We recommend checking in this order:
+
+1. Whether the notification channel has been configured successfully
+2. Whether test sending passes
+3. Whether the receiving address, Webhook, or group configuration is correct
+4. Whether the event really triggered the notification path
+
+## What should you get after troubleshooting?
+
+An effective troubleshooting session should produce at least these 4 types of information:
+
+- The specific failing step
+- Reproducible conditions
+- Short-term mitigation
+- Follow-up governance recommendations
+
+If troubleshooting ends with only “it works again” or “it seems to be some issue”, it means troubleshooting has not truly been completed.
+
+## FAQ
+
+### Why are many issues ultimately not problems with the model itself?
+
+Because in real systems, more common issues usually come from:
+
+- Permissions and entry points
+- Document status
+- Node inputs and outputs
+- Notification and channel configuration
+
+The model is only the final symptom and is not necessarily the root cause.
+
+### Why change only one variable at a time during troubleshooting?
+
+If you change many items at once, it becomes difficult to determine which step actually fixed the issue.
+
+### Why check records before changing configuration?
+
+Because records and logs are the most direct on-site evidence.
+If you start changing configuration without looking, you will usually destroy the original issue scene.
+
+## Notes
+
+- Determine the scope first, then go deeper step by step, and do not start by refactoring or reconfiguring
+- Change only one variable at a time, making it easier to confirm whether the fix is effective
+- If the issue involves permissions, SSO, or site policies, reproduce it with a test account first

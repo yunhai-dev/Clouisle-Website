@@ -49,19 +49,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
             const alternatePage = source.getPage(page.slugs, locale);
             if (!alternatePage) return null;
 
-            return [locale, `${baseUrl}/${locale}${alternatePage.url}`];
+            return [locale, `${baseUrl}${alternatePage.url}`];
           })
           .filter((entry): entry is [string, string] => entry !== null),
       );
 
       entries.push({
-        url: `${baseUrl}/${lang}${page.url}`,
+        url: `${baseUrl}${page.url}`,
         changeFrequency: 'weekly',
         priority: 0.7,
         alternates: {
           languages: {
             ...pageAlternates,
-            'x-default': pageAlternates[i18n.defaultLanguage] ?? `${baseUrl}/${lang}${page.url}`,
+            'x-default': pageAlternates[i18n.defaultLanguage] ?? `${baseUrl}${page.url}`,
           },
         },
       });

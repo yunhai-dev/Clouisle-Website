@@ -1,0 +1,109 @@
+---
+title: Knowledge Base Optimization
+description: Continuously optimize knowledge base results in the order of material quality, chunking strategy, retrieval parameters, and fixed-sample regression.
+icon: SlidersHorizontal
+---
+
+## Feature Overview
+
+After a knowledge base goes online, it will not automatically stay optimal forever.
+As documents increase, questions become more complex, and business scope expands, hit quality and answer stability both need continuous tuning.
+
+## Use Cases
+
+Suitable when:
+
+- There are more and more documents, and hits start becoming noisy
+- An Agent is connected to a knowledge base but answers are still unstable
+- The same question hits very different results at different times
+
+## Prerequisites
+
+Before optimization, we recommend preparing:
+
+- A fixed set of test questions
+- The documents each question is expected to hit
+- Records of current chunking parameters and retrieval parameters
+
+## Steps
+
+### Step 1: Check material quality first instead of tuning parameters immediately
+
+Before optimization, first confirm whether the documents themselves already have issues, such as:
+
+- Outdated content
+- Multiple conflicting versions of the same topic
+- Too many topics mixed in one document
+
+If the materials themselves have issues, parameter tuning usually provides limited benefit.
+
+### Step 2: Then adjust the chunking strategy
+
+After confirming that material quality is basically normal, observe:
+
+- Whether `chunk_size` is too large
+- Whether `chunk_overlap` is too small
+- Whether separators are suitable for the current document type
+
+This step directly affects hit accuracy and context completeness.
+
+### Step 3: Tune retrieval parameters last
+
+Common focus areas include:
+
+- `top_k`
+- `score_threshold`
+- Whether reranking or different retrieval methods are enabled
+
+The goal of parameter tuning is not "the more results, the better", but to make the most relevant content rank near the top more consistently.
+
+### Step 4: Change only one type of variable each time, then run regression immediately
+
+The biggest risk during tuning is changing too many things at once.
+We recommend following this order:
+
+1. Modify materials first
+2. Then modify chunking
+3. Finally modify retrieval parameters
+
+After changing only one type each time, rerun the same set of questions for regression.
+
+### Step 5: Feed optimization results back into Agent testing
+
+After knowledge base hits improve, finally return to the Agent and validate:
+
+- Whether answers are more stable
+- Whether hallucinations are reduced
+- Whether correct context is easier to hit
+
+If the knowledge base side has clearly improved but the Agent remains unstable, then continue checking the prompt or model layer.
+
+## Result Validation
+
+An effective round of knowledge base optimization should show at least:
+
+- Improved hit rate for fixed questions
+- Fewer noisy results
+- Final Agent answers closer to the standard answers
+
+## FAQ
+
+### Why are results still unstable after tuning many parameters?
+
+The problem is very likely not in the parameters, but in the materials themselves.
+If materials are conflicting, outdated, or mixed across topics, even very detailed parameter tuning will struggle to remain stable over time.
+
+### Why use a fixed set of test questions?
+
+Because without fixed samples, it is hard to know whether this optimization truly improved results or merely changed to another unstable behavior by chance.
+
+### Why return to the Agent for testing after knowledge base tuning?
+
+Because end users see the Agent's answers, not retrieval scores.
+Whether knowledge base tuning truly has value must ultimately be reflected in application results.
+
+## Notes
+
+- Fix materials first, then tune parameters
+- Change only one type of variable each time to make it easier to locate where improvements come from
+- Optimization goals should serve real business questions, not only abstract metrics

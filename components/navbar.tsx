@@ -34,9 +34,8 @@ export function Navbar() {
 
   const lang = pathname.split('/')[1] === 'zh' ? 'zh' : 'en';
   const altLang = lang === 'zh' ? 'en' : 'zh';
-  const isDocsPath = pathname.startsWith('/zh/docs') || pathname.startsWith('/en/docs');
-  const altPath = isDocsPath ? `/${altLang}` : pathname.replace(`/${lang}`, `/${altLang}`);
-  const docsHref = '/zh/docs';
+  const altPath = pathname.replace(/^\/(en|zh)(?=\/|$)/, `/${altLang}`);
+  const docsHref = `/${lang}/docs`;
   const t = labels[lang];
 
   const navLinks = useMemo(

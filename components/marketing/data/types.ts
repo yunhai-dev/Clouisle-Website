@@ -78,8 +78,16 @@ export interface DeliveryStep {
   detail: string;
 }
 
+export interface ReleaseAnnouncement {
+  eyebrow: string;
+  title: string;
+  body: string;
+  items: string[];
+}
+
 export interface CopyData {
   badge: string;
+  releaseAnnouncement: ReleaseAnnouncement;
   title: string;
   titleSub: string;
   subtitle: string;

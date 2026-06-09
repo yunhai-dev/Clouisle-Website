@@ -140,7 +140,7 @@ export default async function HomePage({ params }: HomePageProps) {
       operatingSystem: 'Web',
       url: homeUrl,
       description: getHomeSeoCopy(lang).description,
-      softwareVersion: zh ? '封闭测试版' : 'Closed Beta',
+      softwareVersion: 'v0.2.9 Public Beta',
     },
     {
       '@context': 'https://schema.org',

@@ -14,7 +14,7 @@ const labels = {
     security: 'Security & Deployment',
     useCases: 'Use Cases',
     docs: 'Docs',
-    cta: 'Try Beta',
+    cta: 'Join Public Beta',
   },
   zh: {
     product: '平台能力',
@@ -22,7 +22,7 @@ const labels = {
     security: '安全与部署',
     useCases: '应用场景',
     docs: '文档中心',
-    cta: '开始体验',
+    cta: '参与公测',
   },
 };
 
@@ -152,7 +152,7 @@ export function Navbar() {
             {altLang === 'zh' ? '中文' : 'EN'}
           </Link>
           <a
-            href="https://github.com/yunhai-dev/Clouisle"
+            href="https://github.com/clouisle/Clouisle"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"

@@ -60,9 +60,53 @@ Focus on confirming:
 
 If mapping rules are not thought through, duplicate accounts, incorrectly bound accounts, or permission mismatches are most likely to appear later.
 
+For example, when using user information returned by GitHub, parameter mapping can be configured as:
+
+```json
+{
+  "email": "email",
+  "username": "login",
+  "avatar_url": "avatar_url"
+}
+```
+
+This means the platform reads the email, username, and avatar URL from GitHub's `email`, `login`, and `avatar_url` fields respectively.
+
 ![Add SSO provider dialog](/images/docs/sso-provider-dialog.png)
 
-### Step 4: Validate 3 types of scenarios with test accounts first
+### Step 4: Configure the callback URL in the third-party platform
+
+When configuring the callback URL in an IdP, OIDC, or SAML platform, use this format:
+
+```text
+https://your-site-domain/api/v1/sso/callback/{provider_name}
+```
+
+`{provider_name}` is the SSO provider `name` configured in the Admin Console, not its display name.
+
+Examples:
+
+```text
+https://clouisle.example.com/api/v1/sso/callback/google
+https://clouisle.example.com/api/v1/sso/callback/azure-ad
+https://clouisle.example.com/api/v1/sso/callback/company-sso
+```
+
+The system builds the callback URL as:
+
+```text
+{base_url}/api/v1/sso/callback/{provider.name}
+```
+
+`base_url` is resolved in this order:
+
+1. `site_url` in Admin Console site settings
+2. `BACKEND_URL` in configuration
+3. Derived from the current request address
+
+Do not enter the frontend internal post-login redirect path `/sso-callback` in the third-party IdP, OIDC, or SAML platform.
+
+### Step 5: Validate 3 types of scenarios with test accounts first
 
 Do not switch all users from the start.
 We recommend testing at least the following 3 types of accounts:
@@ -73,7 +117,7 @@ We recommend testing at least the following 3 types of accounts:
 
 After completing testing, you should be able to confirm that SSO does not only "redirect successfully", but truly writes accounts and authorizes them as expected.
 
-### Step 5: Retain a fallback entry, then switch through gray release
+### Step 6: Retain a fallback entry, then switch through gray release
 
 Before switching all users, we recommend enabling it in a small scope first.
 At the same time, retain a local administrator account to avoid losing Admin Console access directly when SSO is misconfigured.

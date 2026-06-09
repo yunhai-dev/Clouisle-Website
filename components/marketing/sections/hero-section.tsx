@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
-import { ArrowRight, Play } from 'lucide-react';
-import type { Locale, CopyData } from '../data/types';
+import { ArrowRight, ExternalLink } from 'lucide-react';
+import type { CopyData } from '../data/types';
 import { providers } from '../data/providers';
 import { useCounter } from '../hooks/use-counter';
 import { useMagnetic } from '../hooks/use-magnetic';
@@ -12,7 +12,6 @@ import { useMagnetic } from '../hooks/use-magnetic';
 type GSAPStatic = typeof import('gsap').gsap;
 
 interface HeroSectionProps {
-  locale: Locale;
   t: CopyData;
   reducedMotion: boolean;
 }
@@ -44,7 +43,7 @@ function StatCounter({
   );
 }
 
-export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
+export function HeroSection({ t, reducedMotion }: HeroSectionProps) {
   const heroRef = useRef<HTMLElement | null>(null);
   const magneticPrimaryRef = useMagnetic(reducedMotion, 0.3);
   const magneticSecondaryRef = useMagnetic(reducedMotion, 0.25);
@@ -183,7 +182,26 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
 
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-6 pb-32 pt-48 text-center lg:px-12">
         <div className="cl-hero-copy flex flex-col items-center">
-          <span className="cl-badge cl-hero-badge">{t.badge}</span>
+          <div className="cl-release-announcement w-full max-w-4xl">
+            <div className="cl-release-announcement-header">
+              <span className="cl-release-eyebrow">{t.releaseAnnouncement.eyebrow}</span>
+              <span className="cl-release-dot" aria-hidden="true" />
+              <span>{t.releaseAnnouncement.items[0]}</span>
+            </div>
+            <p className="cl-release-title mt-3">
+              {t.releaseAnnouncement.title}
+            </p>
+            <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-zinc-400">
+              {t.releaseAnnouncement.body}
+            </p>
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              {t.releaseAnnouncement.items.slice(1).map(item => (
+                <span key={item} className="cl-release-pill">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
 
           <div className="cl-hero-title-wrap">
             <h1 className="cl-gradient-heading mt-8 text-5xl font-semibold leading-[1.08] sm:text-6xl lg:text-7xl xl:text-8xl">
@@ -207,14 +225,16 @@ export function HeroSection({ locale, t, reducedMotion }: HeroSectionProps) {
               {t.primaryCta}
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link
-              href={`/${locale}/beta`}
+            <a
+              href="https://github.com/clouisle/Clouisle/releases/tag/v0.2.9"
+              target="_blank"
+              rel="noopener noreferrer"
               className="cl-btn-secondary cl-magnetic"
               ref={magneticSecondaryRef as React.Ref<HTMLAnchorElement>}
             >
-              <Play className="h-4 w-4" />
+              <ExternalLink className="h-4 w-4" />
               {t.secondaryCta}
-            </Link>
+            </a>
           </div>
 
           {/* Product hero screenshot */}

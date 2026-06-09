@@ -932,6 +932,76 @@ body:has(.cl-docs-shell) {
     text-transform: uppercase;
 }
 
+.cl-release-announcement {
+    position: relative;
+    color: var(--cl-muted);
+    text-align: center;
+}
+
+.cl-release-announcement::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 0.6rem;
+    width: min(680px, 86vw);
+    height: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, rgba(180, 167, 214, 0.32), transparent);
+}
+
+.cl-release-announcement-header {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    border: 1px solid var(--cl-border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.035);
+    color: rgba(188, 194, 208, 0.72);
+    padding: 0.42rem 0.78rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.cl-release-title {
+    color: rgba(245, 247, 252, 0.92);
+    font-size: clamp(1rem, 1.5vw, 1.22rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.cl-release-eyebrow {
+    color: rgba(245, 247, 252, 0.88);
+}
+
+.cl-release-dot {
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 999px;
+    background: var(--cl-accent);
+    box-shadow: 0 0 14px rgba(180, 167, 214, 0.42);
+}
+
+.cl-release-pill {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.022);
+    color: rgba(188, 194, 208, 0.72);
+    padding: 0.32rem 0.56rem;
+    font-size: 0.74rem;
+}
+
 .cl-btn-primary,
 .cl-btn-secondary {
     display: inline-flex;

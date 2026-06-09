@@ -30,7 +30,7 @@ export function MarketingHomePage({ lang }: MarketingHomePageProps) {
   return (
     <div ref={scopeRef} className="cl-home-shell">
       <div className="cl-noise-overlay" aria-hidden="true" />
-      <HeroSection locale={locale} t={t} reducedMotion={reducedMotion} />
+      <HeroSection t={t} reducedMotion={reducedMotion} />
       <WhySection locale={locale} t={t} />
       <CapabilitiesSection locale={locale} t={t} />
       <MemorySection locale={locale} reducedMotion={reducedMotion} t={t} />

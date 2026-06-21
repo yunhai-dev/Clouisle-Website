@@ -938,17 +938,6 @@ body:has(.cl-docs-shell) {
     text-align: center;
 }
 
-.cl-release-announcement::before {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    left: 50%;
-    top: 0.6rem;
-    width: min(680px, 86vw);
-    height: 1px;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, transparent, rgba(180, 167, 214, 0.32), transparent);
-}
 
 .cl-release-announcement-header {
     display: inline-flex;

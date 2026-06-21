@@ -64,6 +64,8 @@ export interface Advantage {
   title: string;
   description: string;
   proof: string;
+  metric: string;
+  metricLabel: string;
 }
 
 export interface MemoryCard {
@@ -76,6 +78,8 @@ export interface MemoryCard {
 export interface DeliveryStep {
   title: string;
   detail: string;
+  duration: string;
+  outcomes: string[];
 }
 
 export interface ReleaseAnnouncement {
@@ -134,4 +138,23 @@ export interface CopyData {
   finalBody: string;
   finalPrimary: string;
   finalSecondary: string;
+  comparison: ComparisonData;
+}
+
+export interface ComparisonRow {
+  scenario: string;
+  pain: string;
+  clouisle: string;
+  others: string;
+  highlight?: boolean;
+  badge?: 'recommended' | 'different' | 'enterprise';
+}
+
+export interface ComparisonData {
+  title: string;
+  eyebrow: string;
+  subtitle: string;
+  columns: { scenario: string; clouisle: string; others: string };
+  rows: ComparisonRow[];
+  note?: string;
 }

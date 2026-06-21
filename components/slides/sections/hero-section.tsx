@@ -4,10 +4,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { ArrowRight, ExternalLink } from 'lucide-react';
-import type { CopyData } from '../data/types';
-import { providers } from '../data/providers';
-import { useCounter } from '../hooks/use-counter';
-import { useMagnetic } from '../hooks/use-magnetic';
+import type { CopyData } from '@/components/marketing/data/types';
+import { providers } from '@/components/marketing/data/providers';
+import { useCounter } from '@/components/marketing/hooks/use-counter';
+import { useMagnetic } from '@/components/marketing/hooks/use-magnetic';
 
 type GSAPStatic = typeof import('gsap').gsap;
 
@@ -194,27 +194,6 @@ export function HeroSection({ t, reducedMotion }: HeroSectionProps) {
           <p className="cl-hero-body mt-7 max-w-3xl text-lg leading-relaxed text-zinc-400">
             {t.subtitle}
           </p>
-
-          <div className="cl-hero-cta-row mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="https://app.clouisle.asia"
-              className="cl-btn-primary cl-magnetic"
-              ref={magneticPrimaryRef as React.Ref<HTMLAnchorElement>}
-            >
-              {t.primaryCta}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href="https://github.com/clouisle/Clouisle/releases/tag/v0.2.9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cl-btn-secondary cl-magnetic"
-              ref={magneticSecondaryRef as React.Ref<HTMLAnchorElement>}
-            >
-              <ExternalLink className="h-4 w-4" />
-              {t.secondaryCta}
-            </a>
-          </div>
 
           {/* Product hero screenshot */}
           {t.heroImage && (

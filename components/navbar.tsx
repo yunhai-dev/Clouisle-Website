@@ -22,7 +22,7 @@ const labels = {
     security: '安全与部署',
     useCases: '应用场景',
     docs: '文档中心',
-    cta: '参与公测',
+    cta: '立即体验',
   },
 };
 

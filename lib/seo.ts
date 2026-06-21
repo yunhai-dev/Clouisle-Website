@@ -33,8 +33,8 @@ export function getHomeSeoCopy(lang: string): {
 } {
   if (isZh(lang)) {
     return {
-      title: '云屿 - 企业级 AI 平台 V0.2.9 公测',
-      description: '云屿 V0.2.9 全面开放公测，将 AI Agent、工作流编排与企业级知识检索整合到同一平台',
+      title: '云屿 - 企业级 AI 平台',
+      description: '云屿将 AI Agent、工作流编排与企业级知识检索整合到同一平台，帮助团队安全落地生产级 AI',
       keywords: [
         '企业级AI平台',
         '企业AI平台',

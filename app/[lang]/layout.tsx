@@ -15,6 +15,7 @@ import {
   isZh,
 } from "@/lib/seo";
 import "../globals.css";
+import { ClouisleChat } from "@/components/clouisle-chat";
 
 const { provider } = defineI18nUI(i18n, {
   translations: {
@@ -119,6 +120,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className="antialiased flex flex-col min-h-screen">
+        <ClouisleChat />
         <RootProvider
           i18n={provider(lang)}
           search={{

@@ -14,6 +14,7 @@ const labels = {
     security: 'Security & Deployment',
     useCases: 'Use Cases',
     docs: 'Docs',
+    contact: 'Contact',
     cta: 'Join Public Beta',
   },
   zh: {
@@ -22,6 +23,7 @@ const labels = {
     security: '安全与部署',
     useCases: '应用场景',
     docs: '文档中心',
+    contact: '联系我们',
     cta: '立即体验',
   },
 };
@@ -45,8 +47,18 @@ export function Navbar() {
       { href: `/${lang}#security`, text: t.security, docs: false },
       { href: `/${lang}#use-cases`, text: t.useCases, docs: false },
       { href: docsHref, text: t.docs, docs: true },
+      { href: `/${lang}/contact`, text: t.contact, docs: false },
     ],
-    [docsHref, lang, t.architecture, t.docs, t.product, t.security, t.useCases]
+    [
+      docsHref,
+      lang,
+      t.architecture,
+      t.contact,
+      t.docs,
+      t.product,
+      t.security,
+      t.useCases,
+    ]
   );
 
   const docsActive = pathname.startsWith(docsHref);

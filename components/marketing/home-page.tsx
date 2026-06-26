@@ -46,7 +46,7 @@ export function MarketingHomePage({ lang }: MarketingHomePageProps) {
       <SecuritySection t={t} />
       <UseCasesSection locale={locale} t={t} />
       <div className="cl-section-divider mx-auto max-w-7xl" />
-      <FinalCtaSection t={t} reducedMotion={reducedMotion} />
+      <FinalCtaSection locale={locale} t={t} reducedMotion={reducedMotion} />
     </div>
   );
 }

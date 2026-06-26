@@ -3,17 +3,18 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
-import type { CopyData } from '../data/types';
+import type { CopyData, Locale } from '../data/types';
 import { useMagnetic } from '../hooks/use-magnetic';
 
 type GSAPStatic = typeof import('gsap').gsap;
 
 interface FinalCtaSectionProps {
+  locale: Locale;
   t: CopyData;
   reducedMotion: boolean;
 }
 
-export function FinalCtaSection({ t, reducedMotion }: FinalCtaSectionProps) {
+export function FinalCtaSection({ locale, t, reducedMotion }: FinalCtaSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const magneticPrimaryRef = useMagnetic(reducedMotion, 0.3);
   const magneticSecondaryRef = useMagnetic(reducedMotion, 0.25);
@@ -101,13 +102,13 @@ export function FinalCtaSection({ t, reducedMotion }: FinalCtaSectionProps) {
                 {t.finalPrimary}
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href="mailto:yunhai@yhnotes.com"
+              <Link
+                href={`/${locale}/contact`}
                 className="cl-btn-secondary cl-btn-lg cl-magnetic"
                 ref={magneticSecondaryRef as React.Ref<HTMLAnchorElement>}
               >
                 {t.finalSecondary}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

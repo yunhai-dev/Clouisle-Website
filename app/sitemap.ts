@@ -39,6 +39,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+  // Contact page for each language
+  for (const lang of i18n.languages) {
+    const altLang = lang === i18n.defaultLanguage
+      ? i18n.languages.find((l) => l !== lang) ?? lang
+      : i18n.defaultLanguage;
+    const contactAlternates = Object.fromEntries(
+      i18n.languages.map((l) => [l, `${baseUrl}/${l}/contact`]),
+    );
+    entries.push({
+      url: `${baseUrl}/${lang}/contact`,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+      alternates: {
+        languages: {
+          ...contactAlternates,
+          'x-default': `${baseUrl}/${altLang}/contact`,
+        },
+      },
+    });
+  }
+
   // Documentation pages for each language
   for (const lang of i18n.languages) {
     const pages = source.getPages(lang);

@@ -2581,6 +2581,371 @@ body:has(.cl-docs-shell) {
     }
 }
 
+/* Contact page shell + form */
+.cl-contact-section {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(4.5rem, 7vw, 5.5rem) clamp(1rem, 4vw, 2rem)
+        clamp(1.5rem, 3vw, 2.5rem);
+    overflow: clip;
+}
+
+.cl-contact-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(
+        circle at 50% 36%,
+        rgba(0, 0, 0, 0.7),
+        transparent 72%
+    );
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.cl-contact-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            900px 600px at 50% 0%,
+            rgba(180, 167, 214, 0.1),
+            transparent 70%
+        ),
+        radial-gradient(
+            700px 500px at 50% 100%,
+            rgba(152, 208, 255, 0.06),
+            transparent 70%
+        );
+    z-index: 0;
+}
+
+.cl-contact-shell {
+    position: relative;
+    width: min(100%, 38rem);
+    z-index: 1;
+}
+
+.cl-contact-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+        linear-gradient(180deg, rgba(13, 16, 22, 0.82) 0%, rgba(8, 10, 14, 0.94) 100%),
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(152, 208, 255, 0.12),
+            transparent 54%
+        );
+    box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    padding: 2.5rem 1.75rem;
+}
+
+@media (min-width: 768px) {
+    .cl-contact-card {
+        padding: 3rem 2.5rem;
+    }
+}
+
+.cl-contact-orb {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 9999px;
+    filter: blur(70px);
+    z-index: 0;
+}
+
+.cl-contact-orb-one {
+    left: -12%;
+    top: -16%;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(
+        circle,
+        rgba(160, 214, 255, 0.18),
+        rgba(160, 214, 255, 0)
+    );
+}
+
+.cl-contact-orb-two {
+    right: -10%;
+    bottom: -14%;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(
+        circle,
+        rgba(180, 167, 214, 0.16),
+        rgba(180, 167, 214, 0)
+    );
+}
+
+.cl-contact-sweep {
+    position: absolute;
+    left: -30%;
+    top: 0;
+    width: 28%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.06),
+        transparent
+    );
+    transform: skewX(-16deg);
+    opacity: 0.42;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cl-contact-heading {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.cl-contact-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: rgba(188, 194, 208, 0.72);
+}
+
+.cl-contact-eyebrow-dot {
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 9999px;
+    background: var(--cl-accent);
+    box-shadow: 0 0 14px rgba(180, 167, 214, 0.42);
+}
+
+.cl-contact-title {
+    margin-top: 0.7rem;
+    font-size: clamp(1.85rem, 3vw + 0.6rem, 2.6rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--cl-text);
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.98) 0%,
+        rgba(180, 167, 214, 0.85) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cl-contact-body {
+    margin-top: 0.85rem;
+    color: rgba(188, 194, 208, 0.84);
+    max-width: 32rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.cl-contact-divider {
+    position: relative;
+    z-index: 1;
+    height: 1px;
+    margin: 1.5rem auto 1.75rem;
+    width: min(60%, 240px);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.16) 20%,
+        rgba(255, 255, 255, 0.22) 50%,
+        rgba(255, 255, 255, 0.16) 80%,
+        transparent
+    );
+}
+
+.cl-form {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.cl-form input,
+.cl-form textarea {
+    height: 2.75rem;
+    border-radius: 0.65rem;
+    background: rgba(8, 10, 14, 0.55);
+    border-color: rgba(255, 255, 255, 0.07);
+    font-size: 0.95rem;
+    padding-left: 0.95rem;
+    padding-right: 0.95rem;
+    transition:
+        border-color 200ms ease-out,
+        box-shadow 200ms ease-out,
+        background-color 200ms ease-out;
+}
+
+.cl-form textarea {
+    height: auto;
+    min-height: 7.5rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    line-height: 1.55;
+    resize: vertical;
+}
+
+.cl-form input:hover:not([disabled]),
+.cl-form textarea:hover:not([disabled]) {
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+.cl-form input:focus-visible,
+.cl-form textarea:focus-visible {
+    border-color: rgba(180, 167, 214, 0.5);
+    box-shadow: 0 0 0 3px rgba(180, 167, 214, 0.14);
+    background: rgba(8, 10, 14, 0.7);
+    outline: none;
+}
+
+.cl-form input[disabled],
+.cl-form textarea[disabled] {
+    opacity: 0.55;
+}
+
+.cl-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.cl-form-label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.cl-form-hint {
+    font-size: 0.72rem;
+    color: rgba(188, 194, 208, 0.55);
+    letter-spacing: 0.01em;
+}
+
+.cl-form-error {
+    font-size: 0.78rem;
+    color: rgb(252, 165, 165);
+}
+
+.cl-form-error-banner {
+    border-radius: 0.7rem;
+    border: 1px solid rgba(248, 113, 113, 0.32);
+    background: rgba(248, 113, 113, 0.08);
+    color: rgb(252, 165, 165);
+    padding: 0.75rem 0.95rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.cl-form-success {
+    border-radius: 0.9rem;
+    border: 1px solid rgba(74, 222, 128, 0.32);
+    background: rgba(74, 222, 128, 0.08);
+    padding: 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.6rem;
+}
+
+.cl-form-success-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: rgba(74, 222, 128, 0.18);
+    color: rgb(134, 239, 172);
+}
+
+.cl-form-success-title {
+    color: var(--cl-text);
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.cl-form-success-hint {
+    color: rgba(188, 194, 208, 0.84);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    max-width: 32rem;
+}
+
+.cl-form-submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.cl-form-submit[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.cl-form-spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-top-color: rgba(0, 0, 0, 0.7);
+    animation: cl-form-spin 0.7s linear infinite;
+}
+
+@keyframes cl-form-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 640px) {
+    .cl-contact-card {
+        padding: 2rem 1.25rem;
+    }
+
+    .cl-contact-heading {
+        margin-bottom: 1.25rem;
+    }
+
+    .cl-contact-divider {
+        margin: 1.25rem auto 1.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cl-form-spinner {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
